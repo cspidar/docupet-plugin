@@ -1,0 +1,1707 @@
+{
+  "type": "root",
+  "children": [
+    {
+      "type": "heading",
+      "depth": 1,
+      "children": [
+        {
+          "type": "text",
+          "value": "Markdown Features",
+          "position": {
+            "start": {
+              "line": 1,
+              "column": 3,
+              "offset": 2
+            },
+            "end": {
+              "line": 1,
+              "column": 20,
+              "offset": 19
+            },
+            "indent": []
+          }
+        }
+      ],
+      "position": {
+        "start": {
+          "line": 1,
+          "column": 1,
+          "offset": 0
+        },
+        "end": {
+          "line": 1,
+          "column": 20,
+          "offset": 19
+        },
+        "indent": []
+      }
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Docusaurus supports ",
+          "position": {
+            "start": {
+              "line": 3,
+              "column": 1,
+              "offset": 21
+            },
+            "end": {
+              "line": 3,
+              "column": 21,
+              "offset": 41
+            },
+            "indent": []
+          }
+        },
+        {
+          "type": "strong",
+          "children": [
+            {
+              "type": "link",
+              "title": null,
+              "url": "https://daringfireball.net/projects/markdown/syntax",
+              "children": [
+                {
+                  "type": "text",
+                  "value": "Markdown",
+                  "position": {
+                    "start": {
+                      "line": 3,
+                      "column": 24,
+                      "offset": 44
+                    },
+                    "end": {
+                      "line": 3,
+                      "column": 32,
+                      "offset": 52
+                    },
+                    "indent": []
+                  }
+                }
+              ],
+              "position": {
+                "start": {
+                  "line": 3,
+                  "column": 23,
+                  "offset": 43
+                },
+                "end": {
+                  "line": 3,
+                  "column": 86,
+                  "offset": 106
+                },
+                "indent": []
+              }
+            }
+          ],
+          "position": {
+            "start": {
+              "line": 3,
+              "column": 21,
+              "offset": 41
+            },
+            "end": {
+              "line": 3,
+              "column": 88,
+              "offset": 108
+            },
+            "indent": []
+          }
+        },
+        {
+          "type": "text",
+          "value": " and a few ",
+          "position": {
+            "start": {
+              "line": 3,
+              "column": 88,
+              "offset": 108
+            },
+            "end": {
+              "line": 3,
+              "column": 99,
+              "offset": 119
+            },
+            "indent": []
+          }
+        },
+        {
+          "type": "strong",
+          "children": [
+            {
+              "type": "text",
+              "value": "additional features",
+              "position": {
+                "start": {
+                  "line": 3,
+                  "column": 101,
+                  "offset": 121
+                },
+                "end": {
+                  "line": 3,
+                  "column": 120,
+                  "offset": 140
+                },
+                "indent": []
+              }
+            }
+          ],
+          "position": {
+            "start": {
+              "line": 3,
+              "column": 99,
+              "offset": 119
+            },
+            "end": {
+              "line": 3,
+              "column": 122,
+              "offset": 142
+            },
+            "indent": []
+          }
+        },
+        {
+          "type": "text",
+          "value": ".",
+          "position": {
+            "start": {
+              "line": 3,
+              "column": 122,
+              "offset": 142
+            },
+            "end": {
+              "line": 3,
+              "column": 123,
+              "offset": 143
+            },
+            "indent": []
+          }
+        }
+      ],
+      "position": {
+        "start": {
+          "line": 3,
+          "column": 1,
+          "offset": 21
+        },
+        "end": {
+          "line": 3,
+          "column": 123,
+          "offset": 143
+        },
+        "indent": []
+      }
+    },
+    {
+      "type": "heading",
+      "depth": 2,
+      "children": [
+        {
+          "type": "text",
+          "value": "Front Matter",
+          "position": {
+            "start": {
+              "line": 5,
+              "column": 4,
+              "offset": 148
+            },
+            "end": {
+              "line": 5,
+              "column": 16,
+              "offset": 160
+            },
+            "indent": []
+          }
+        }
+      ],
+      "position": {
+        "start": {
+          "line": 5,
+          "column": 1,
+          "offset": 145
+        },
+        "end": {
+          "line": 5,
+          "column": 16,
+          "offset": 160
+        },
+        "indent": []
+      }
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Markdown documents have metadata at the top called ",
+          "position": {
+            "start": {
+              "line": 7,
+              "column": 1,
+              "offset": 162
+            },
+            "end": {
+              "line": 7,
+              "column": 52,
+              "offset": 213
+            },
+            "indent": []
+          }
+        },
+        {
+          "type": "link",
+          "title": null,
+          "url": "https://jekyllrb.com/docs/front-matter/",
+          "children": [
+            {
+              "type": "text",
+              "value": "Front Matter",
+              "position": {
+                "start": {
+                  "line": 7,
+                  "column": 53,
+                  "offset": 214
+                },
+                "end": {
+                  "line": 7,
+                  "column": 65,
+                  "offset": 226
+                },
+                "indent": []
+              }
+            }
+          ],
+          "position": {
+            "start": {
+              "line": 7,
+              "column": 52,
+              "offset": 213
+            },
+            "end": {
+              "line": 7,
+              "column": 107,
+              "offset": 268
+            },
+            "indent": []
+          }
+        },
+        {
+          "type": "text",
+          "value": ":",
+          "position": {
+            "start": {
+              "line": 7,
+              "column": 107,
+              "offset": 268
+            },
+            "end": {
+              "line": 7,
+              "column": 108,
+              "offset": 269
+            },
+            "indent": []
+          }
+        }
+      ],
+      "position": {
+        "start": {
+          "line": 7,
+          "column": 1,
+          "offset": 162
+        },
+        "end": {
+          "line": 7,
+          "column": 108,
+          "offset": 269
+        },
+        "indent": []
+      }
+    },
+    {
+      "type": "code",
+      "lang": "text",
+      "meta": "title=\"my-doc.md\"",
+      "value": "// highlight-start\n---\nid: my-doc-id\ntitle: My document title\ndescription: My document description\nslug: /my-custom-url\n---\n// highlight-end\n\n## Markdown heading\n\nMarkdown text with [links](./hello.md)",
+      "position": {
+        "start": {
+          "line": 9,
+          "column": 1,
+          "offset": 271
+        },
+        "end": {
+          "line": 22,
+          "column": 4,
+          "offset": 502
+        },
+        "indent": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "type": "heading",
+      "depth": 2,
+      "children": [
+        {
+          "type": "text",
+          "value": "Links",
+          "position": {
+            "start": {
+              "line": 24,
+              "column": 4,
+              "offset": 507
+            },
+            "end": {
+              "line": 24,
+              "column": 9,
+              "offset": 512
+            },
+            "indent": []
+          }
+        }
+      ],
+      "position": {
+        "start": {
+          "line": 24,
+          "column": 1,
+          "offset": 504
+        },
+        "end": {
+          "line": 24,
+          "column": 9,
+          "offset": 512
+        },
+        "indent": []
+      }
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Regular Markdown links are supported, using url paths or relative file paths.",
+          "position": {
+            "start": {
+              "line": 26,
+              "column": 1,
+              "offset": 514
+            },
+            "end": {
+              "line": 26,
+              "column": 78,
+              "offset": 591
+            },
+            "indent": []
+          }
+        }
+      ],
+      "position": {
+        "start": {
+          "line": 26,
+          "column": 1,
+          "offset": 514
+        },
+        "end": {
+          "line": 26,
+          "column": 78,
+          "offset": 591
+        },
+        "indent": []
+      }
+    },
+    {
+      "type": "code",
+      "lang": "md",
+      "meta": null,
+      "value": "Let's see how to [Create a page](/create-a-page).",
+      "position": {
+        "start": {
+          "line": 28,
+          "column": 1,
+          "offset": 593
+        },
+        "end": {
+          "line": 30,
+          "column": 4,
+          "offset": 652
+        },
+        "indent": [
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "type": "code",
+      "lang": "md",
+      "meta": null,
+      "value": "Let's see how to [Create a page](./create-a-page.md).",
+      "position": {
+        "start": {
+          "line": 32,
+          "column": 1,
+          "offset": 654
+        },
+        "end": {
+          "line": 34,
+          "column": 4,
+          "offset": 717
+        },
+        "indent": [
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "strong",
+          "children": [
+            {
+              "type": "text",
+              "value": "Result:",
+              "position": {
+                "start": {
+                  "line": 36,
+                  "column": 3,
+                  "offset": 721
+                },
+                "end": {
+                  "line": 36,
+                  "column": 10,
+                  "offset": 728
+                },
+                "indent": []
+              }
+            }
+          ],
+          "position": {
+            "start": {
+              "line": 36,
+              "column": 1,
+              "offset": 719
+            },
+            "end": {
+              "line": 36,
+              "column": 12,
+              "offset": 730
+            },
+            "indent": []
+          }
+        },
+        {
+          "type": "text",
+          "value": " Let's see how to ",
+          "position": {
+            "start": {
+              "line": 36,
+              "column": 12,
+              "offset": 730
+            },
+            "end": {
+              "line": 36,
+              "column": 30,
+              "offset": 748
+            },
+            "indent": []
+          }
+        },
+        {
+          "type": "link",
+          "title": null,
+          "url": "/docs/tutorial-basics/create-a-page",
+          "children": [
+            {
+              "type": "text",
+              "value": "Create a page",
+              "position": {
+                "start": {
+                  "line": 36,
+                  "column": 31,
+                  "offset": 749
+                },
+                "end": {
+                  "line": 36,
+                  "column": 44,
+                  "offset": 762
+                },
+                "indent": []
+              }
+            }
+          ],
+          "position": {
+            "start": {
+              "line": 36,
+              "column": 30,
+              "offset": 748
+            },
+            "end": {
+              "line": 36,
+              "column": 82,
+              "offset": 800
+            },
+            "indent": []
+          }
+        },
+        {
+          "type": "text",
+          "value": ".",
+          "position": {
+            "start": {
+              "line": 36,
+              "column": 82,
+              "offset": 800
+            },
+            "end": {
+              "line": 36,
+              "column": 83,
+              "offset": 801
+            },
+            "indent": []
+          }
+        }
+      ],
+      "position": {
+        "start": {
+          "line": 36,
+          "column": 1,
+          "offset": 719
+        },
+        "end": {
+          "line": 36,
+          "column": 83,
+          "offset": 801
+        },
+        "indent": []
+      }
+    },
+    {
+      "type": "heading",
+      "depth": 2,
+      "children": [
+        {
+          "type": "text",
+          "value": "Images",
+          "position": {
+            "start": {
+              "line": 38,
+              "column": 4,
+              "offset": 806
+            },
+            "end": {
+              "line": 38,
+              "column": 10,
+              "offset": 812
+            },
+            "indent": []
+          }
+        }
+      ],
+      "position": {
+        "start": {
+          "line": 38,
+          "column": 1,
+          "offset": 803
+        },
+        "end": {
+          "line": 38,
+          "column": 10,
+          "offset": 812
+        },
+        "indent": []
+      }
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Regular Markdown images are supported.",
+          "position": {
+            "start": {
+              "line": 40,
+              "column": 1,
+              "offset": 814
+            },
+            "end": {
+              "line": 40,
+              "column": 39,
+              "offset": 852
+            },
+            "indent": []
+          }
+        }
+      ],
+      "position": {
+        "start": {
+          "line": 40,
+          "column": 1,
+          "offset": 814
+        },
+        "end": {
+          "line": 40,
+          "column": 39,
+          "offset": 852
+        },
+        "indent": []
+      }
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "You can use absolute paths to reference images in the static directory (",
+          "position": {
+            "start": {
+              "line": 42,
+              "column": 1,
+              "offset": 854
+            },
+            "end": {
+              "line": 42,
+              "column": 73,
+              "offset": 926
+            },
+            "indent": []
+          }
+        },
+        {
+          "type": "inlineCode",
+          "value": "static/img/docusaurus.png",
+          "position": {
+            "start": {
+              "line": 42,
+              "column": 73,
+              "offset": 926
+            },
+            "end": {
+              "line": 42,
+              "column": 100,
+              "offset": 953
+            },
+            "indent": []
+          }
+        },
+        {
+          "type": "text",
+          "value": "):",
+          "position": {
+            "start": {
+              "line": 42,
+              "column": 100,
+              "offset": 953
+            },
+            "end": {
+              "line": 42,
+              "column": 102,
+              "offset": 955
+            },
+            "indent": []
+          }
+        }
+      ],
+      "position": {
+        "start": {
+          "line": 42,
+          "column": 1,
+          "offset": 854
+        },
+        "end": {
+          "line": 42,
+          "column": 102,
+          "offset": 955
+        },
+        "indent": []
+      }
+    },
+    {
+      "type": "code",
+      "lang": "md",
+      "meta": null,
+      "value": "![Docusaurus logo](/img/docusaurus.png)",
+      "position": {
+        "start": {
+          "line": 44,
+          "column": 1,
+          "offset": 957
+        },
+        "end": {
+          "line": 46,
+          "column": 4,
+          "offset": 1006
+        },
+        "indent": [
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "image",
+          "title": null,
+          "url": "/img/docusaurus.png",
+          "alt": "Docusaurus logo",
+          "position": {
+            "start": {
+              "line": 48,
+              "column": 1,
+              "offset": 1008
+            },
+            "end": {
+              "line": 48,
+              "column": 40,
+              "offset": 1047
+            },
+            "indent": []
+          }
+        }
+      ],
+      "position": {
+        "start": {
+          "line": 48,
+          "column": 1,
+          "offset": 1008
+        },
+        "end": {
+          "line": 48,
+          "column": 40,
+          "offset": 1047
+        },
+        "indent": []
+      }
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "You can reference images relative to the current file as well. This is particularly useful to colocate images close to the Markdown files using them:",
+          "position": {
+            "start": {
+              "line": 50,
+              "column": 1,
+              "offset": 1049
+            },
+            "end": {
+              "line": 50,
+              "column": 150,
+              "offset": 1198
+            },
+            "indent": []
+          }
+        }
+      ],
+      "position": {
+        "start": {
+          "line": 50,
+          "column": 1,
+          "offset": 1049
+        },
+        "end": {
+          "line": 50,
+          "column": 150,
+          "offset": 1198
+        },
+        "indent": []
+      }
+    },
+    {
+      "type": "code",
+      "lang": "md",
+      "meta": null,
+      "value": "![Docusaurus logo](./img/docusaurus.png)",
+      "position": {
+        "start": {
+          "line": 52,
+          "column": 1,
+          "offset": 1200
+        },
+        "end": {
+          "line": 54,
+          "column": 4,
+          "offset": 1250
+        },
+        "indent": [
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "type": "heading",
+      "depth": 2,
+      "children": [
+        {
+          "type": "text",
+          "value": "Code Blocks",
+          "position": {
+            "start": {
+              "line": 56,
+              "column": 4,
+              "offset": 1255
+            },
+            "end": {
+              "line": 56,
+              "column": 15,
+              "offset": 1266
+            },
+            "indent": []
+          }
+        }
+      ],
+      "position": {
+        "start": {
+          "line": 56,
+          "column": 1,
+          "offset": 1252
+        },
+        "end": {
+          "line": 56,
+          "column": 15,
+          "offset": 1266
+        },
+        "indent": []
+      }
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Markdown code blocks are supported with Syntax highlighting.",
+          "position": {
+            "start": {
+              "line": 58,
+              "column": 1,
+              "offset": 1268
+            },
+            "end": {
+              "line": 58,
+              "column": 61,
+              "offset": 1328
+            },
+            "indent": []
+          }
+        }
+      ],
+      "position": {
+        "start": {
+          "line": 58,
+          "column": 1,
+          "offset": 1268
+        },
+        "end": {
+          "line": 58,
+          "column": 61,
+          "offset": 1328
+        },
+        "indent": []
+      }
+    },
+    {
+      "type": "code",
+      "lang": null,
+      "meta": null,
+      "value": "```jsx title=\"src/components/HelloDocusaurus.js\"\nfunction HelloDocusaurus() {\n    return (\n        <h1>Hello, Docusaurus!</h1>\n    )\n}\n```",
+      "position": {
+        "start": {
+          "line": 60,
+          "column": 1,
+          "offset": 1330
+        },
+        "end": {
+          "line": 66,
+          "column": 8,
+          "offset": 1496
+        },
+        "indent": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "type": "code",
+      "lang": "jsx",
+      "meta": "title=\"src/components/HelloDocusaurus.js\"",
+      "value": "function HelloDocusaurus() {\n  return <h1>Hello, Docusaurus!</h1>;\n}",
+      "position": {
+        "start": {
+          "line": 68,
+          "column": 1,
+          "offset": 1498
+        },
+        "end": {
+          "line": 72,
+          "column": 4,
+          "offset": 1619
+        },
+        "indent": [
+          1,
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "type": "heading",
+      "depth": 2,
+      "children": [
+        {
+          "type": "text",
+          "value": "Admonitions",
+          "position": {
+            "start": {
+              "line": 74,
+              "column": 4,
+              "offset": 1624
+            },
+            "end": {
+              "line": 74,
+              "column": 15,
+              "offset": 1635
+            },
+            "indent": []
+          }
+        }
+      ],
+      "position": {
+        "start": {
+          "line": 74,
+          "column": 1,
+          "offset": 1621
+        },
+        "end": {
+          "line": 74,
+          "column": 15,
+          "offset": 1635
+        },
+        "indent": []
+      }
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "Docusaurus has a special syntax to create admonitions and callouts:",
+          "position": {
+            "start": {
+              "line": 76,
+              "column": 1,
+              "offset": 1637
+            },
+            "end": {
+              "line": 76,
+              "column": 68,
+              "offset": 1704
+            },
+            "indent": []
+          }
+        }
+      ],
+      "position": {
+        "start": {
+          "line": 76,
+          "column": 1,
+          "offset": 1637
+        },
+        "end": {
+          "line": 76,
+          "column": 68,
+          "offset": 1704
+        },
+        "indent": []
+      }
+    },
+    {
+      "type": "code",
+      "lang": null,
+      "meta": null,
+      "value": ":::tip My tip\n\nUse this awesome feature option\n\n:::\n\n:::danger Take care\n\nThis action is dangerous\n\n:::",
+      "position": {
+        "start": {
+          "line": 78,
+          "column": 1,
+          "offset": 1706
+        },
+        "end": {
+          "line": 88,
+          "column": 8,
+          "offset": 1833
+        },
+        "indent": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "type": "admonitionHTML",
+      "data": {
+        "hName": "admonition",
+        "hProperties": {
+          "title": "My tip",
+          "type": "tip"
+        }
+      },
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "Use this awesome feature option",
+              "position": {
+                "start": {
+                  "line": 91,
+                  "column": 1,
+                  "offset": 1849
+                },
+                "end": {
+                  "line": 91,
+                  "column": 32,
+                  "offset": 1880
+                },
+                "indent": []
+              }
+            }
+          ],
+          "position": {
+            "start": {
+              "line": 91,
+              "column": 1,
+              "offset": 1849
+            },
+            "end": {
+              "line": 91,
+              "column": 32,
+              "offset": 1880
+            },
+            "indent": []
+          }
+        }
+      ],
+      "position": {
+        "start": {
+          "line": 90,
+          "column": 1,
+          "offset": 1835
+        },
+        "end": {
+          "line": 94,
+          "column": 4,
+          "offset": 1886
+        },
+        "indent": [
+          1,
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "type": "admonitionHTML",
+      "data": {
+        "hName": "admonition",
+        "hProperties": {
+          "title": "Take care",
+          "type": "danger"
+        }
+      },
+      "children": [
+        {
+          "type": "paragraph",
+          "children": [
+            {
+              "type": "text",
+              "value": "This action is dangerous",
+              "position": {
+                "start": {
+                  "line": 97,
+                  "column": 1,
+                  "offset": 1908
+                },
+                "end": {
+                  "line": 97,
+                  "column": 25,
+                  "offset": 1932
+                },
+                "indent": []
+              }
+            }
+          ],
+          "position": {
+            "start": {
+              "line": 97,
+              "column": 1,
+              "offset": 1908
+            },
+            "end": {
+              "line": 97,
+              "column": 25,
+              "offset": 1932
+            },
+            "indent": []
+          }
+        }
+      ],
+      "position": {
+        "start": {
+          "line": 96,
+          "column": 1,
+          "offset": 1888
+        },
+        "end": {
+          "line": 100,
+          "column": 4,
+          "offset": 1938
+        },
+        "indent": [
+          1,
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "type": "heading",
+      "depth": 2,
+      "children": [
+        {
+          "type": "text",
+          "value": "MDX and React Components",
+          "position": {
+            "start": {
+              "line": 102,
+              "column": 4,
+              "offset": 1943
+            },
+            "end": {
+              "line": 102,
+              "column": 28,
+              "offset": 1967
+            },
+            "indent": []
+          }
+        }
+      ],
+      "position": {
+        "start": {
+          "line": 102,
+          "column": 1,
+          "offset": 1940
+        },
+        "end": {
+          "line": 102,
+          "column": 28,
+          "offset": 1967
+        },
+        "indent": []
+      }
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "link",
+          "title": null,
+          "url": "https://mdxjs.com/",
+          "children": [
+            {
+              "type": "text",
+              "value": "MDX",
+              "position": {
+                "start": {
+                  "line": 104,
+                  "column": 2,
+                  "offset": 1970
+                },
+                "end": {
+                  "line": 104,
+                  "column": 5,
+                  "offset": 1973
+                },
+                "indent": []
+              }
+            }
+          ],
+          "position": {
+            "start": {
+              "line": 104,
+              "column": 1,
+              "offset": 1969
+            },
+            "end": {
+              "line": 104,
+              "column": 26,
+              "offset": 1994
+            },
+            "indent": []
+          }
+        },
+        {
+          "type": "text",
+          "value": " can make your documentation more ",
+          "position": {
+            "start": {
+              "line": 104,
+              "column": 26,
+              "offset": 1994
+            },
+            "end": {
+              "line": 104,
+              "column": 60,
+              "offset": 2028
+            },
+            "indent": []
+          }
+        },
+        {
+          "type": "strong",
+          "children": [
+            {
+              "type": "text",
+              "value": "interactive",
+              "position": {
+                "start": {
+                  "line": 104,
+                  "column": 62,
+                  "offset": 2030
+                },
+                "end": {
+                  "line": 104,
+                  "column": 73,
+                  "offset": 2041
+                },
+                "indent": []
+              }
+            }
+          ],
+          "position": {
+            "start": {
+              "line": 104,
+              "column": 60,
+              "offset": 2028
+            },
+            "end": {
+              "line": 104,
+              "column": 75,
+              "offset": 2043
+            },
+            "indent": []
+          }
+        },
+        {
+          "type": "text",
+          "value": " and allows using any ",
+          "position": {
+            "start": {
+              "line": 104,
+              "column": 75,
+              "offset": 2043
+            },
+            "end": {
+              "line": 104,
+              "column": 97,
+              "offset": 2065
+            },
+            "indent": []
+          }
+        },
+        {
+          "type": "strong",
+          "children": [
+            {
+              "type": "text",
+              "value": "React components inside Markdown",
+              "position": {
+                "start": {
+                  "line": 104,
+                  "column": 99,
+                  "offset": 2067
+                },
+                "end": {
+                  "line": 104,
+                  "column": 131,
+                  "offset": 2099
+                },
+                "indent": []
+              }
+            }
+          ],
+          "position": {
+            "start": {
+              "line": 104,
+              "column": 97,
+              "offset": 2065
+            },
+            "end": {
+              "line": 104,
+              "column": 133,
+              "offset": 2101
+            },
+            "indent": []
+          }
+        },
+        {
+          "type": "text",
+          "value": ":",
+          "position": {
+            "start": {
+              "line": 104,
+              "column": 133,
+              "offset": 2101
+            },
+            "end": {
+              "line": 104,
+              "column": 134,
+              "offset": 2102
+            },
+            "indent": []
+          }
+        }
+      ],
+      "position": {
+        "start": {
+          "line": 104,
+          "column": 1,
+          "offset": 1969
+        },
+        "end": {
+          "line": 104,
+          "column": 134,
+          "offset": 2102
+        },
+        "indent": []
+      }
+    },
+    {
+      "type": "code",
+      "lang": "jsx",
+      "meta": null,
+      "value": "export const Highlight = ({children, color}) => (\n  <span\n    style={{\n      backgroundColor: color,\n      borderRadius: '20px',\n      color: '#fff',\n      padding: '10px',\n      cursor: 'pointer',\n    }}\n    onClick={() => {\n      alert(`You clicked the color ${color} with label ${children}`)\n    }}>\n    {children}\n  </span>\n);\n\nThis is <Highlight color=\"#25c2a0\">Docusaurus green</Highlight> !\n\nThis is <Highlight color=\"#1877F2\">Facebook blue</Highlight> !",
+      "position": {
+        "start": {
+          "line": 106,
+          "column": 1,
+          "offset": 2104
+        },
+        "end": {
+          "line": 126,
+          "column": 4,
+          "offset": 2576
+        },
+        "indent": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "type": "export",
+      "value": "export const Highlight = ({children, color}) => (\n  <span\n    style={{\n      backgroundColor: color,\n      borderRadius: '20px',\n      color: '#fff',\n      padding: '10px',\n      cursor: 'pointer',\n    }}\n    onClick={() => {\n      alert(`You clicked the color ${color} with label ${children}`);\n    }}>\n    {children}\n  </span>\n);",
+      "position": {
+        "start": {
+          "line": 128,
+          "column": 1,
+          "offset": 2578
+        },
+        "end": {
+          "line": 142,
+          "column": 3,
+          "offset": 2909
+        },
+        "indent": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ]
+      }
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "This is ",
+          "position": {
+            "start": {
+              "line": 144,
+              "column": 1,
+              "offset": 2911
+            },
+            "end": {
+              "line": 144,
+              "column": 9,
+              "offset": 2919
+            },
+            "indent": []
+          }
+        },
+        {
+          "type": "jsx",
+          "value": "<Highlight color=\"#25c2a0\">",
+          "position": {
+            "start": {
+              "line": 144,
+              "column": 9,
+              "offset": 2919
+            },
+            "end": {
+              "line": 144,
+              "column": 36,
+              "offset": 2946
+            },
+            "indent": []
+          }
+        },
+        {
+          "type": "text",
+          "value": "Docusaurus green",
+          "position": {
+            "start": {
+              "line": 144,
+              "column": 36,
+              "offset": 2946
+            },
+            "end": {
+              "line": 144,
+              "column": 52,
+              "offset": 2962
+            },
+            "indent": []
+          }
+        },
+        {
+          "type": "jsx",
+          "value": "</Highlight>",
+          "position": {
+            "start": {
+              "line": 144,
+              "column": 52,
+              "offset": 2962
+            },
+            "end": {
+              "line": 144,
+              "column": 64,
+              "offset": 2974
+            },
+            "indent": []
+          }
+        },
+        {
+          "type": "text",
+          "value": " !",
+          "position": {
+            "start": {
+              "line": 144,
+              "column": 64,
+              "offset": 2974
+            },
+            "end": {
+              "line": 144,
+              "column": 66,
+              "offset": 2976
+            },
+            "indent": []
+          }
+        }
+      ],
+      "position": {
+        "start": {
+          "line": 144,
+          "column": 1,
+          "offset": 2911
+        },
+        "end": {
+          "line": 144,
+          "column": 66,
+          "offset": 2976
+        },
+        "indent": []
+      }
+    },
+    {
+      "type": "paragraph",
+      "children": [
+        {
+          "type": "text",
+          "value": "This is ",
+          "position": {
+            "start": {
+              "line": 146,
+              "column": 1,
+              "offset": 2978
+            },
+            "end": {
+              "line": 146,
+              "column": 9,
+              "offset": 2986
+            },
+            "indent": []
+          }
+        },
+        {
+          "type": "jsx",
+          "value": "<Highlight color=\"#1877F2\">",
+          "position": {
+            "start": {
+              "line": 146,
+              "column": 9,
+              "offset": 2986
+            },
+            "end": {
+              "line": 146,
+              "column": 36,
+              "offset": 3013
+            },
+            "indent": []
+          }
+        },
+        {
+          "type": "text",
+          "value": "Facebook blue",
+          "position": {
+            "start": {
+              "line": 146,
+              "column": 36,
+              "offset": 3013
+            },
+            "end": {
+              "line": 146,
+              "column": 49,
+              "offset": 3026
+            },
+            "indent": []
+          }
+        },
+        {
+          "type": "jsx",
+          "value": "</Highlight>",
+          "position": {
+            "start": {
+              "line": 146,
+              "column": 49,
+              "offset": 3026
+            },
+            "end": {
+              "line": 146,
+              "column": 61,
+              "offset": 3038
+            },
+            "indent": []
+          }
+        },
+        {
+          "type": "text",
+          "value": " !",
+          "position": {
+            "start": {
+              "line": 146,
+              "column": 61,
+              "offset": 3038
+            },
+            "end": {
+              "line": 146,
+              "column": 63,
+              "offset": 3040
+            },
+            "indent": []
+          }
+        }
+      ],
+      "position": {
+        "start": {
+          "line": 146,
+          "column": 1,
+          "offset": 2978
+        },
+        "end": {
+          "line": 146,
+          "column": 63,
+          "offset": 3040
+        },
+        "indent": []
+      }
+    }
+  ],
+  "position": {
+    "start": {
+      "line": 1,
+      "column": 1,
+      "offset": 0
+    },
+    "end": {
+      "line": 146,
+      "column": 63,
+      "offset": 3040
+    }
+  }
+}

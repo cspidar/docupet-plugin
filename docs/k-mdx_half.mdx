@@ -1,0 +1,1230 @@
+# REST API - MDX - Half
+
+## 배송지 가져오기 {#shipping-address}
+
+##### 기본 정보 {#shipping-address-info}
+
+| 메서드 | URL | 인증 방식 |
+| --- | --- | --- |
+| `GET` | `https://kapi.kakao.com/v1/user/shipping_address` | 액세스 토큰<br/>서비스 앱 어드민 키 |
+
+| 권한 | 사전 설정 | [카카오 로그인](../kakaologin/common) | [사용자 동의](../kakaologin/common#authorization-consent-item) |
+| --- | --- | --- | --- |
+| 필요: [동의 항목](../kakaologin/prerequisite#consent-item) | [플랫폼 등록](../getting-started/app#platform)<br/>[카카오 로그인 활성화](../kakaologin/prerequisite#kakao-login-activate)<br/>[동의 항목](../kakaologin/prerequisite#consent-item) | 필요 | 필요:<br/>배송지 정보(shipping_address) |
+
+<br />
+
+특정 사용자의 배송지 정보를 가져옵니다. 이 API는 액세스 토큰으로 요청하는 방식, 서비스 관리자가 애플리케이션(이하 앱)의 어드민 키와 회원번호로 요청하는 방식 두 가지로 제공됩니다. 서버에서 배송지를 요청할 때는 요청 헤더(Header)에 사용자 토큰 대신 어드민 키를 사용하고, 배송지를 조회할 사용자를 지정해야 합니다.
+
+응답에 `shipping_addresses` 값이 없다면 `shipping_addresses_needs_agreement` 값을 참고해 사용자로부터 동의받아야 하는지 판단합니다. 해당 값이 `true`라면 사용자의 동의를 거쳐 배송지 정보를 받을 수 있으므로, [추가 항목 동의 받기](../kakaologin/rest-api#additional-consent) 기능을 사용해 동의 및 배송지 정보를 받습니다. `false`라면 사용자의 동의 여부와 관계없이 배송지 정보를 받을 수 없는 상태이므로, 자체적으로 사용자로부터 배송지 정보를 수집해야 합니다. (참고: [사용자 동의 시 정보 제공 가능 여부](../kakaologin/common#needs_agreement))
+
+#### 요청: 액세스 토큰 방식 {#shipping-address-request-access-token}
+
+##### 헤더 {#shipping-address-request-access-token-header}
+
+| 이름 | 설명 | 필수 |
+| --- | --- | --- |
+| Authorization | `Authorization: Bearer ${ACCESS_TOKEN}`<br/>인증 방식, 액세스 토큰으로 인증 요청 | O |
+
+##### 쿼리 파라미터 {#shipping-address-request-access-token-query}
+
+| 이름 | 타입 | 설명 | 필수 |
+| --- | --- | --- | --- |
+| address_id | `Long` | 배송지 정보가 많은 경우, 특정 배송지 정보만 얻고 싶을 때 배송지 ID 지정 | X |
+| from_updated_at | `Integer` | 여러 페이지에 걸쳐 응답이 제공될 때, 기준이 되는 배송지 `updated_at` 시각<br/>해당 시각(미포함) 이전에 수정된 배송지부터 조회<br/>이전 페이지의 마지막 배송지의 `updated_at`을 다음 페이지 input으로 사용<br/>값을 0으로 전달하면 처음부터 조회 | X |
+| page_size | `Integer` | 2 이상, 한 페이지에 포함할 배송지 개수(기본값: 10) | X |
+
+#### 요청: 서비스 앱 어드민 키 방식 {#shipping-address-request-admin-key}
+
+##### 헤더 {#shipping-address-request-admin-key-header}
+
+| 이름 | 설명 | 필수 |
+| --- | --- | --- |
+| Authorization | `Authorization: KakaoAK ${SERVICE_APP_ADMIN_KEY}`<br/>인증 방식, 서비스 앱 어드민 키로 인증 요청 | O |
+
+##### 쿼리 파라미터 {#shipping-address-request-admin-key-query}
+
+| 이름 | 타입 | 설명 | 필수 |
+| --- | --- | --- | --- |
+| target_id_type | `String` | 사용자 ID 타입, `user_id`로 고정 | O |
+| target_id | `Long` | 회원번호 | O |
+| address_id | `Long` | 배송지 정보가 많은 경우, 특정 배송지 정보만 얻고 싶을 때 배송지 ID 지정 | X |
+| from_updated_at | `Integer` | 여러 페이지에 걸쳐 응답이 제공될 때, 기준이 되는 배송지 `updated_at` 시각<br/>해당 시각(미포함) 이전에 수정된 배송지부터 조회<br/>이전 페이지의 마지막 배송지의 `updated_at`을 다음 페이지 input으로 사용<br/>값을 0으로 전달하면 처음부터 조회 | X |
+| page_size | `Integer` | 2 이상, 한 페이지에 포함할 배송지 개수(기본값: 10) | X |
+
+#### 응답 {#shipping-address-response}
+
+##### 본문 {#shipping-address-response-body}
+
+| 이름 | 타입 | 설명 | 필수 |
+| --- | --- | --- | --- |
+| user_id | `Long` | 회원번호 | O |
+| shipping_addresses | [`ShippingAddress[]`](#shipping-address-response-body-shipping-address) | 배송지 정보 리스트 | X |
+| shipping_addresses_needs_agreement | `Boolean` | 배송지를 얻기 위한 추가 동의 필요 여부 | X |
+
+<p class="desc_discrip">
+  * has_shipping_addresse: Deprecated, 배송지 정보 값 소유 여부(Boolean), API를
+  통한 해당 사용자 정보의 제공 가능 여부를 확인하는 용도로 사용할 수 없음,{" "}
+  <a href="../kakaologin/common#needs_agreement">needs_agreement</a> 참고
+</p>
+
+##### ShippingAddress {#shipping-address-response-body-shipping-address}
+
+| 이름 | 타입 | 설명 | 필수 |
+| --- | --- | --- | --- |
+| id | `Long` | 배송지 ID | O |
+| name | `String` | 배송지명 | X |
+| is_default | `Boolean` | 기본 배송지 여부 | O |
+| updated_at | `Integer` | 수정시각 | X |
+| type | `String` | 배송지 타입<br/>구주소 또는 신주소(도로명주소) | X |
+| base_address | `String` | 우편번호 검색시 채워지는 기본 주소 | X |
+| detail_address | `String` | 기본 주소에 추가하는 상세 주소 | X |
+| receiver_name | `String` | 수령인 이름 | X |
+| receiver_phone_number1 | `String` | 수령인 연락처 | X |
+| receiver_phone_number2 | `String` | 수령인 추가 연락처 | X |
+| zone_number | `String` | 신주소 우편번호, 신주소인 경우에 반드시 존재함 | X |
+| zip_code | `String` | 구주소 우편번호, 우편번호를 소유하지 않는 구주소도 존재하여 구주소인 경우도 해당값이 없을 수 있음 | X |
+
+#### 예제 {#shipping-address-sample}
+
+##### 요청: 액세스 토큰 방식
+
+```bash
+curl -v -X GET "https://kapi.kakao.com/v1/user/shipping_address" \
+  -H "Authorization: Bearer ${ACCESS_TOKEN}"
+```
+
+##### 요청: 서비스 앱 어드민 키 방식
+
+```bash
+curl -v -G GET "https://kapi.kakao.com/v1/user/shipping_address" \
+  -H "Authorization: KakaoAK ${SERVICE_APP_ADMIN_KEY}" \
+  -d "target_id_type=user_id" \
+  -d "target_id=${USER_ID}"
+```
+
+##### 응답
+
+```json
+{
+  "user_id": 9876543211234,
+  "shipping_addresses": [
+    {
+      "id": 319,
+      "name": "회사",
+      "is_default": true,
+      "updated_at": 1538448856,
+      "type": "NEW",
+      "base_address": "경기 성남시 분당구 판교역로 231 (삼평동, 에이치스퀘어 에스동)",
+      "detail_address": "6층",
+      "receiver_name": "판교",
+      "receiver_phone_number1": "031-123-2345",
+      "receiver_phone_number2": "",
+      "zone_number": "13494",
+      "zip_code": "463-400"
+    },
+    {
+      "id": 320,
+      "name": "회사",
+      "is_default": false,
+      "updated_at": 1538450389,
+      "type": "OLD",
+      "base_address": "경기 성남시 분당구 삼평동 680 (삼평동, 에이치스퀘어 에스동)",
+      "detail_address": "6층",
+      "receiver_name": "판교2",
+      "receiver_phone_number1": "010-0056-1234",
+      "receiver_phone_number2": "",
+      "zone_number": "13494",
+      "zip_code": "463-400"
+    }
+  ],
+  "shipping_addresses_needs_agreement": false
+}
+```
+
+## 동의 내역 확인하기 {#check-consent}
+
+##### 기본 정보 {#check-consent-info}
+
+| 메서드 | URL | 인증 방식 |
+| --- | --- | --- |
+| `GET` | `https://kapi.kakao.com/v2/user/scopes` | 액세스 토큰<br/>서비스 앱 어드민 키 |
+
+| 권한 | 사전 설정 | [카카오 로그인](../kakaologin/common) | [사용자 동의](../kakaologin/common#authorization-consent-item) |
+| --- | --- | --- | --- |
+| - | [플랫폼 등록](../getting-started/app#platform)<br/>[카카오 로그인 활성화](../kakaologin/prerequisite#kakao-login-activate)<br/>[동의 항목](../kakaologin/prerequisite#consent-item) | 필요 | - |
+
+<br />
+
+사용자가 동의한 동의 항목의 상세 정보 목록을 조회합니다. [내 애플리케이션] > [카카오 로그인] > [동의 항목]에 설정된 동의 항목의 목록과 사용자가 동의한 동의 항목의 상세 정보를 반환합니다. 사용자가 기존에 동의했던 동의 항목이라면 현재 앱에 사용하도록 설정돼 있지 않아도 응답에 포함됩니다.
+
+사용자 액세스 토큰을 사용하는 방법, 앱 어드민 키를 사용하는 방법 두 가지로 제공됩니다. 사용자 액세스 토큰 또는 어드민 키를 헤더(Header)에 담아 `GET`으로 요청합니다. 어드민 키로 요청할 때는 어떤 사용자의 정보가 필요한지 명시하기 위해 대상 사용자의 회원번호를 함께 전달합니다.
+
+성공 시 앱에서 설정한 동의 항목(Scope) 목록을 받습니다. 사용자가 동의한 항목은 `agreed` 값이 `true`로 전달됩니다. 특정 동의 항목의 동의 내역만 확인하려면 `scopes` 파라미터로 동의 항목의 ID를 지정하여 요청할 수 있으며, 성공 시 응답은 지정된 동의 항목의 정보만 포함합니다.
+
+#### 요청: 액세스 토큰 방식 {#check-consent-request-access-token}
+
+##### 헤더 {#check-consent-request-access-token-header}
+
+| 이름 | 설명 | 필수 |
+| --- | --- | --- |
+| Authorization | `Authorization: Bearer ${ACCESS_TOKEN}`<br/>인증 방식, 액세스 토큰으로 인증 요청 | O |
+
+##### 쿼리 파라미터 {#check-consent-request-access-token-header-query}
+
+| 이름 | 타입 | 설명 | 필수 |
+| --- | --- | --- | --- |
+| scopes | `String[]` | 특정 동의 항목에 대한 동의 내역만 불러오려는 경우 사용<br/>[동의 항목](../kakaologin/prerequisite#consent-item)의 ID 목록<br/>쉼표(,)를 구분자로 여러 ID를 하나의 문자열에 담아 전달 | X |
+
+#### 요청: 서비스 앱 어드민 키 방식 {#check-consent-request-admin-key}
+
+##### 헤더 {#check-consent-request-admin-key-header}
+
+| 이름 | 설명 | 필수 |
+| --- | --- | --- |
+| Authorization | `Authorization: KakaoAK ${SERVICE_APP_ADMIN_KEY}`<br/>인증 방식, 서비스 앱 어드민 키로 인증 요청 | O |
+
+##### 쿼리 파라미터 {#check-consent-request-admin-key-query}
+
+| 이름 | 타입 | 설명 | 필수 |
+| --- | --- | --- | --- |
+| target_id_type | `String` | 회원번호 종류, `user_id`로 고정 | O |
+| target_id | `Long` | 동의 내역을 확인할 사용자의 회원번호 | O |
+| scopes | `String[]` | 특정 동의 항목에 대한 동의 내역만 불러오려는 경우 사용<br/>[동의 항목](../kakaologin/prerequisite#consent-item)의 ID 목록<br/>쉼표(,)를 구분자로 여러 ID를 하나의 문자열에 담아 전달 | X |
+
+#### 응답 {#check-consent-response}
+
+##### 본문 {#check-consent-response-body}
+
+| 이름 | 타입 | 설명 | 필수 |
+| --- | --- | --- | --- |
+| id | `Long` | 회원번호 | O |
+| scopes | [`Scope[]`](#check-consent-response-body-scope) | 해당 앱의 동의 항목(Scope) 목록 | O |
+
+##### Scope {#check-consent-response-body-scope}
+
+| 이름 | 타입 | 설명 | 필수 |
+| --- | --- | --- | --- |
+| id | `String` | [동의 항목](../kakaologin/prerequisite#consent-item) ID | O |
+| display_name | `String` | 사용자 동의 화면에 출력되는 동의 항목의 이름 또는 설명 | O |
+| type | `String` | 동의 항목 타입, `PRIVACY` 또는 `SERVICE` <br/>`PRIVACY`: [개인정보 보호 동의 항목](../kakaologin/prerequisite#personal-information) <br/> `SERVICE`: [접근권한 관리 동의 항목](../kakaologin/prerequisite#permission) | O |
+| using | `Boolean` | 해당 앱에서 동의 항목 사용 여부<br/>`true`: 현재 앱에서 사용 중인 동의 항목일 경우 <br/>`false`: 사용자가 동의했으나 현재 앱에 설정되어 있지 않은 동의 항목일 경우 | O |
+| agreed | `Boolean` | 사용자 동의 여부<br/>`true`: 사용자가 동의한 경우 <br/>`false`: 사용자가 동의하지 않은 경우 | O |
+| revocable | `Boolean` | 동의 항목의 [동의 철회](#revoke-consent) 가능 여부<br/>사용자가 동의(`"agreed"=true`)한 동의 항목인 경우에만 응답에 포함<br/>`true`: 동의 철회 가능 <br/>`false`: 동의 철회 불가능 | X |
+
+#### 예제 {#check-consent-sample}
+
+##### 요청: 액세스 토큰 방식
+
+```bash
+curl -v -X GET "https://kapi.kakao.com/v2/user/scopes" \
+    -H "Authorization: Bearer ${ACCESS_TOKEN}"
+```
+
+##### 요청: 액세스 토큰 방식하여 특정 동의 항목만 조회
+
+```bash
+curl -v -G GET "https://kapi.kakao.com/v2/user/scopes" \
+    -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+    --data-urlencode 'scopes=["account_email","friends"]'
+```
+
+##### 요청: 서비스 앱 어드민 키 방식
+
+```bash
+curl -v -G GET "https://kapi.kakao.com/v2/user/scopes" \
+    -H "Authorization: KakaoAK ${SERVICE_APP_ADMIN_KEY}" \
+    -d "target_id_type=user_id" \
+    -d "target_id=123456789"
+```
+
+##### 응답
+
+```json
+{
+    "id":123456789,
+    "scopes":[
+        {
+            "id":"profile",
+            "display_name":"Profile Info(nickname/profile image)",
+            "type":"PRIVACY",
+            "using":true,           // 동의 항목 사용 여부
+            "agreed":true,          // 사용자 동의 여부
+            "revocable":false       // 동의 철회 가능 여부, "agreed"가 "true"일 경우에만 반환
+        },
+        {
+            "id":"account_email",
+            "display_name":"Email",
+            "type":"PRIVACY",
+            "using":true,           // 동의 항목 사용 여부
+            "agreed":true,          // 사용자 동의 여부
+            "revocable":true        // 동의 철회 가능 여부, "agreed"가 "true"일 경우에만 반환
+        },
+        {
+            "id":"shipping_address",
+            "display_name":"Shipping information (receiver, shipping address, phone number)",
+            "type":"PRIVACY",
+            "using":true,           // 동의 항목 사용 여부
+            "agreed":false         // 사용자 동의 여부
+        },
+        ...
+    ]
+}
+```
+
+##### 응답: 이메일, 카카오 서비스 내 친구 목록에 대한 동의 내역
+
+```json
+{
+  "id": 123456789,
+  "scopes": [
+    {
+      "id": "friends",
+      "display_name": "Friends List in Kakao Service(Including profile image, nickname, and favorites)",
+      "type": "PRIVACY",
+      "using": true,
+      "agreed": true,
+      "revocable": false
+    },
+    {
+      "id": "account_email",
+      "display_name": "Email",
+      "type": "PRIVACY",
+      "using": true,
+      "agreed": false
+    }
+  ]
+}
+```
+
+## 동의 철회하기 {#revoke-consent}
+
+##### 기본 정보 {#revoke-consent-info}
+
+| 메서드 | URL | 인증 방식 |
+| --- | --- | --- |
+| `POST` | `https://kapi.kakao.com/v2/user/revoke/scopes` | 액세스 토큰<br/>서비스 앱 어드민 키 |
+
+| 권한 | 사전 설정 | [카카오 로그인](../kakaologin/common) | [사용자 동의](../kakaologin/common#authorization-consent-item) |
+| --- | --- | --- | --- |
+| - | [플랫폼 등록](../getting-started/app#platform)<br/>[카카오 로그인 활성화](../kakaologin/prerequisite#kakao-login-activate)<br/>[동의 항목](../kakaologin/prerequisite#consent-item) | 필요 | - |
+
+<br />
+
+사용자가 동의한 항목에 대해 동의를 철회합니다. [동의 내역 확인하기](#check-consent)를 통해 조회한 동의 항목 정보 중 동의 철회 가능 여부(`revocable`) 값이 `true`인 동의 항목만 철회 가능합니다. 동의 철회가 불가능한 동의 항목을 대상으로 요청한 경우 에러 응답을 받습니다.
+
+액세스 토큰을 사용하는 방법, 앱 어드민 키를 사용하는 방법 두 가지로 제공됩니다. 액세스 토큰 또는 어드민 키를 헤더(Header)에 담고, 동의를 철회할 동의 항목 목록을 전달하여 `POST`로 요청합니다. 어드민 키로 요청할 때는 어떤 사용자의 정보가 필요한지 명시하기 위해 대상 사용자의 회원번호를 함께 전달합니다.
+
+요청 성공 시 변경된 앱의 동의 항목 정보 목록을 받습니다. 각 동의 항목 사용 설정 여부, 사용자 동의 여부, 철회 가능 여부와 같은 상세 정보를 포함합니다. 동의가 철회된 동의항목은 `agreed` 값을 `false`로 반환합니다.
+
+#### 요청: 액세스 토큰 방식 {#revoke-consent-request-aceess-token}
+
+##### 헤더 {#revoke-consent-request-aceess-token-header}
+
+| 이름 | 설명 | 필수 |
+| --- | --- | --- |
+| Authorization | `Authorization: Bearer ${ACCESS_TOKEN}`<br/>인증 방식, 액세스 토큰으로 인증 요청 | O |
+
+##### 본문 {#revoke-consent-request-aceess-token-body}
+
+| 이름 | 타입 | 설명 | 필수 |
+| --- | --- | --- | --- |
+| scopes | `String[]` | 동의를 철회할 [동의 항목](../kakaologin/prerequisite#consent-item) ID 목록<br/><br/>**비고**: [동의 내역 확인하기](#check-consent) API 응답에서 동의 철회 가능 여부(`revocable`) 값이 `true`인 동의 항목만 동의 철회 가능 | O |
+
+#### 요청: 서비스 앱 어드민 키 방식 {#revoke-consent-request-admin-key}
+
+##### 헤더 {#revoke-consent-request-admin-key-header}
+
+| 이름 | 설명 | 필수 |
+| --- | --- | --- |
+| Authorization | `Authorization: KakaoAK ${SERVICE_APP_ADMIN_KEY}`<br/>인증 방식, 서비스 앱 어드민 키로 인증 요청 | O |
+
+##### 본문 {#revoke-consent-request-admin-key-body}
+
+| 이름 | 타입 | 설명 | 필수 |
+| --- | --- | --- | --- |
+| target_id_type | `String` | 회원번호 종류, `user_id`로 고정 | O |
+| target_id | `Long` | 동의를 철회할 사용자의 회원번호 | O |
+| scopes | `String[]` | 동의를 철회할 [동의 항목](../kakaologin/prerequisite#consent-item) ID 목록<br/>[동의 내역 확인하기](#check-consent) API 응답에서 동의 철회 가능 여부(`revocable`) 값이 `true`인 동의 항목만 철회 가능 | O |
+
+#### 응답 {#revoke-consent-response}
+
+- [동의 내역 확인하기](#check-consent)와 동일, 해당 항목 참고
+
+#### 예제 {#revoke-consent-sample}
+
+##### 요청: 액세스 토큰 방식
+
+```bash
+curl -v -X POST "https://kapi.kakao.com/v2/user/revoke/scopes" \
+    -H "Content-Type: application/x-www-form-urlencoded" \
+    -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+    --data-urlencode 'scopes=["account_email"]'
+```
+
+##### 요청: 서비스 앱 어드민 키 방식
+
+```bash
+curl -v -X POST "https://kapi.kakao.com/v2/user/revoke/scopes" \
+    -H "Content-Type: application/x-www-form-urlencoded" \
+    -H "Authorization: KakaoAK ${SERVICE_APP_ADMIN_KEY}" \
+    -d "target_id_type=user_id" \
+    -d "target_id=123456789" \
+    --data-urlencode 'scopes=["account_email"]'
+```
+
+##### 응답
+
+```json
+{
+    "id":123456789,
+    "scopes":[
+        {
+            "id":"profile",
+            "display_name":"Profile Info(nickname/profile image)",
+            "type":"PRIVACY",
+            "using":true,
+            "agreed":true,
+            "revocable":false
+        },
+        {
+            "id":"friends",
+            "display_name":"Friends List in Kakao Service(Including profile image, nickname, and favorites)",
+            "type":"PRIVACY",
+            "using":true,
+            "agreed":true,
+            "revocable":false
+        },
+        {
+            "id":"account_email",
+            "display_name":"Email",
+            "type":"PRIVACY",
+            "using":true,
+            "agreed":false          //동의 철회 성공 시 동의 여부 값이 false로 변경됨
+        },
+        {
+            "id":"talk_chats",
+            "display_name":"Read chat lists in KakaoTalk",
+            "type":"SERVICE",
+            "using":true,
+            "agreed":true,
+            "revocable":false
+        },
+        ...
+    ]
+}
+```
+
+##### 응답: 실패, 필수 동의 항목의 철회를 요청한 경우
+
+```json
+HTTP/1.1 403 Forbidden
+{
+    "msg":"[profile] is not revocable. check out if it's set as required on developers.kakao.com",
+    "code":-3
+}
+```
+
+##### 응답: 실패, 철회할 동의 항목 ID가 잘못된 경우
+
+```json
+HTTP/1.1 400 Bad Request
+{
+  "msg":"There is no scopes to revoke. check out if given scope id([email]) is correct again.",
+  "code":-2
+}
+```
+
+## 서비스 약관 동의 내역 확인하기 {#terms}
+
+##### 기본 정보 { .exclude } {#terms-info}
+
+| 메서드 | URL | 인증 방식 |
+| --- | --- | --- |
+| `GET` | `https://kapi.kakao.com/v2/user/service_terms` | 액세스 토큰<br/>서비스 앱 어드민 키 |
+
+| 권한 | 사전 설정 | [카카오 로그인](../kakaologin/common) | [사용자 동의](../kakaologin/common#authorization-consent-item) |
+| --- | --- | --- | --- |
+| 필요: [카카오싱크](../kakaosync/common) | [플랫폼 등록](../getting-started/app#platform)<br/>[카카오 로그인 활성화](../kakaologin/prerequisite#kakao-login-activate)<br/>[동의 항목](../kakaologin/prerequisite#consent-item)<br/>[간편가입](../kakaologin/prerequisite#simple-signup) | 필요 | - |
+
+<br />
+
+<div class="box_sign">
+  <strong>카카오싱크 전용</strong>
+  <p class="desc_sign">
+    <a href="../kakaosync/common">카카오싱크</a>를 도입한 서비스만 사용할 수
+    있는 기능입니다.
+  </p>
+</div>
+
+특정 사용자가 어떤 서비스 약관에 동의하고 로그인했는지 확인합니다.
+
+원하는 인증 방식을 헤더에 담아 `GET`으로 요청합니다. 앱에 설정된 전체 서비스 약관 목록을 조회하려면 `result`를 `app_service_terms`로 지정해 요청합니다. 특정 서비스 약관만 조회하려면 `tags`에 해당 서비스 약관의 태그(Tag)를 지정해 요청합니다.
+
+관리자가 특정 사용자의 서비스 약관 동의 내역을 확인하려면 서버에서 어드민 키(Admin key)로 요청할 수 있습니다. 어드민 키는 **서버에서 호출할 때만** 사용해야 합니다. 어드민 키를 사용해 요청할 경우 `target_id` 파라미터로 사용자 회원번호를 전달해 조회 대상을 지정하고, `target_id_type` 파라미터 값을 `user_id`로 지정하여 함께 전달해야 합니다.
+
+요청 성공 시 응답은 사용자 ID와 서비스 약관 정보가 포함된 `JSON` 객체입니다. 사용자가 서비스를 탈퇴하고 앱과의 연결을 끊은 뒤 로그인하면 다시 간편가입 화면을 통한 동의 절차를 거칩니다. 이에 따라 서비스 약관에 동의한 시간 정보가 갱신됩니다.
+
+#### 요청: 액세스 토큰 방식 {#web-request-access-token}
+
+##### 헤더 {#terms-request-access-token-header}
+
+| 이름 | 설명 | 필수 |
+| --- | --- | --- |
+| Authorization | `Authorization: Bearer ${ACCESS_TOKEN}`<br/>인증 방식, 액세스 토큰으로 인증 요청 | O |
+
+##### 쿼리 파라미터 {#terms-request-access-token-query}
+
+| 이름 | 타입 | 설명 | 필수 |
+| --- | --- | --- | --- |
+| result | `String` | 조회할 서비스 약관 목록, 다음 중 하나<br/>`agreed_service_terms`: 사용자가 동의한 서비스 약관 목록(기본값)<br/>`app_service_terms`: 앱에 사용 설정된 서비스 약관 목록 | X |
+| tags | `String` | 조회할 서비스 약관 태그, `result`로 지정한 목록 내 서비스 약관으로 한정<br/>여러 태그를 쉼표(`,`)로 구분한 하나의 문자열로 전달, [예제](#terms-sample) 참고 | X |
+
+#### 요청: 서비스 앱 어드민 키 방식 {#web-request-admin-key}
+
+##### 헤더 {#terms-request-admin-key-header}
+
+| 이름 | 설명 | 필수 |
+| --- | --- | --- |
+| Authorization | `Authorization: KakaoAK ${SERVICE_APP_ADMIN_KEY}`<br/>인증 방식, 서비스 앱 어드민 키로 인증 요청 | O |
+
+##### 쿼리 파라미터 {#terms-request-admin-key-query}
+
+| 이름 | 타입 | 설명 | 필수 |
+| --- | --- | --- | --- |
+| target_id_type | `String` | 사용자 ID 타입, `user_id`로 고정 | O |
+| target_id | `Long` | 사용자 ID | O |
+| result | `String` | 조회할 서비스 약관 목록, 다음 중 하나<br/>`agreed_service_terms`: 사용자가 동의한 서비스 약관 목록(기본값)<br/>`app_service_terms`: 앱에 사용 설정된 서비스 약관 목록 | X |
+| tags | `String` | 조회할 서비스 약관 태그, `result`로 지정한 목록 내 서비스 약관으로 한정<br/>여러 태그를 쉼표(`,`)로 구분한 하나의 문자열로 전달, [예제](#terms-sample) 참고 | X |
+
+#### 응답 {#web-response}
+
+##### 본문 {#web-response-body}
+
+| 이름 | 타입 | 설명 | 필수 |
+| --- | --- | --- | --- |
+| id | `Long` | 회원번호 | O |
+| service_terms | [`ServiceTerms[]`](#service-terms) | 서비스 약관 목록 | X |
+
+##### ServiceTerms {#service-terms}
+
+| 이름 | 타입 | 설명 | 필수 |
+| --- | --- | --- | --- |
+| tag | `String` | 서비스 약관에 설정된 태그(Tag) | O |
+| required | `Boolean` | 서비스 약관의 필수 동의 여부 | O |
+| agreed | `Boolean` | 서비스 약관의 동의 상태<br/>`true`: 동의<br/>`false`: 미동의 | O |
+| revocable | `Boolean` | 서비스 약관의 동의 철회 가능 여부<br/>`true`: 동의 철회 가능<br/>`false`: 동의 철회 불가, 미동의 상태 또는 필수 약관인 경우<br/><br/>**비고**: 동의 철회 가능 서비스 약관만 [서비스 약관 동의 철회하기](#revoke-terms) 요청 가능 | O |
+| agreed_at | `Datetime` | 사용자가 해당 서비스 약관에 마지막으로 동의한 시간<br/>(RFC3339 internet date/time format) | X |
+
+#### 예제 { .exclude } {#terms-sample}
+
+##### 요청: 액세스 토큰 방식, 사용자가 동의한 서비스 약관 조회
+
+```bash
+curl -v -G GET "https://kapi.kakao.com/v2/user/service_terms" \
+    -H "Authorization: Bearer ${ACCESS_TOKEN}"
+```
+
+##### 요청: 액세스 토큰 방식, 앱에 사용 설정된 서비스 약관 목록 조회
+
+```bash
+curl -v -G GET "https://kapi.kakao.com/v2/user/service_terms" \
+    -H 'Authorization: Bearer ${ACCESS_TOKEN}' \
+    -d "result=app_service_terms"
+```
+
+##### 요청: 서비스 앱 어드민 키 방식, 특정 태그의 서비스 약관만 조회
+
+```bash
+curl -v -G GET "https://kapi.kakao.com/v2/user/service_terms" \
+    -H "Authorization: KakaoAK ${SERVICE_APP_ADMIN_KEY}" \
+    -d "target_id_type=user_id" \
+    -d "target_id=${USER_ID}" \
+    -d "tags=optional_no_consent,service_2020_0218"
+```
+
+##### 응답: 사용자가 동의한 서비스 약관
+
+```json
+{
+    "id": 111111,
+    "service_terms": [
+        {
+            "tag": "optional_20200616",
+            "required": false,
+            "agreed": true,
+            "revocable": true,
+            "agreed_at": "2023-06-29T07:39:56Z"
+        },
+        {
+            "tag": "service_2020_0218",
+            "required": true,
+            "agreed": true,
+            "revocable": false,
+            "agreed_at": "2023-06-29T07:39:56Z"
+        },
+        ...
+    ]
+}
+```
+
+##### 응답: 앱에 사용 설정된 서비스 약관 목록
+
+```json
+{
+    "id": 111111,
+    "service_terms": [
+        {
+            "tag": "optional_20200616",
+            "required": false,
+            "agreed": true,
+            "revocable": true,
+            "agreed_at": "2023-06-29T07:39:56Z"
+        },
+        {
+            "tag": "optional_no_consent",
+            "required": false,
+            "agreed": false,
+            "revocable": true
+        },
+        {
+            "tag": "service_2020_0218",
+            "required": true,
+            "agreed": true,
+            "revocable": false,
+            "agreed_at": "2023-06-29T07:39:56Z"
+        },
+        ...
+    ]
+}
+```
+
+##### 응답: 특정 태그의 서비스 약관
+
+```json
+{
+  "id": 111111,
+  "service_terms": [
+    {
+      "tag": "optional_no_consent",
+      "required": false,
+      "agreed": false,
+      "revocable": true
+    },
+    {
+      "tag": "service_2020_0218",
+      "required": true,
+      "agreed": true,
+      "revocable": false,
+      "agreed_at": "2023-06-29T07:39:56Z"
+    }
+  ]
+}
+```
+
+##### 응답: 실패, 존재하지 않는 서비스 약관 태그
+
+```json
+HTTP/1.1 400 Bad Request
+{
+    "msg": "There is no tags to get service terms. check out to configured this tags([test]) in app(docu_test).",
+    "code": -2
+}
+```
+
+## 서비스 약관 동의 철회하기 {#revoke-terms}
+
+##### 기본 정보 { .exclude } {#revoke-terms-info}
+
+| 메서드 | URL | 인증 방식 |
+| --- | --- | --- |
+| `POST` | `https://kapi.kakao.com/v2/user/revoke/service_terms` | 액세스 토큰<br/>서비스 앱 어드민 키 |
+
+| 권한 | 사전 설정 | [카카오 로그인](../kakaologin/common) | [사용자 동의](../kakaologin/common#authorization-consent-item) |
+| --- | --- | --- | --- |
+| 필요: [카카오싱크](../kakaosync/common) | [플랫폼 등록](../getting-started/app#platform)<br/>[카카오 로그인 활성화](../kakaologin/prerequisite#kakao-login-activate)<br/>[동의 항목](../kakaologin/prerequisite#consent-item)<br/>[간편가입](../kakaologin/prerequisite#simple-signup) | 필요 | - |
+
+<br />
+
+<div class="box_sign">
+  <strong>카카오싱크 전용</strong>
+  <p class="desc_sign">
+    <a href="../kakaosync/common">카카오싱크</a>를 도입한 서비스만 사용할 수
+    있는 기능입니다.
+  </p>
+</div>
+
+특정 사용자가 동의한 서비스 약관의 동의를 철회합니다. [사용자 약관 동의 내역 확인하기](#terms) 응답의 동의 철회 가능 여부(`revocable`) 값이 `true`인 서비스 약관만 철회 가능합니다.
+
+원하는 인증 방식을 헤더에 담아 `POST`로 요청합니다. `tags`에 동의 철회할 서비스 약관의 태그(Tag)를 지정해 전달해야 합니다.
+
+관리자가 특정 사용자의 서비스 약관 동의를 철회하려면 서버에서 어드민 키(Admin key)로 요청할 수 있습니다. 어드민 키는 **서버에서 호출할 때만** 사용해야 합니다. 어드민 키를 사용해 요청할 경우 `target_id`에 사용자 회원번호를 전달해 조회 대상을 지정하고, `target_id_type`를 `user_id`로 지정해 함께 전달해야 합니다.
+
+요청 성공 시 응답은 동의 철회에 성공한 서비스 약관 목록이 포함된 `JSON` 객체입니다. 동의 철회가 불가능한 사용자 미동의 또는 필수 동의 서비스 약관은 포함되지 않습니다.
+
+#### 요청: 액세스 토큰 방식 { .exclude } {#revoke-terms-request-access-token}
+
+##### 헤더 {#revoke-terms-request-access-token-header}
+
+| 이름 | 설명 | 필수 |
+| --- | --- | --- |
+| Authorization | `Authorization: Bearer ${ACCESS_TOKEN}`<br/>인증 방식, 액세스 토큰으로 인증 요청 | O |
+
+##### 본문 {#revoke-terms-request-access-token-body}
+
+| 이름 | 타입 | 설명 | 필수 |
+| --- | --- | --- | --- |
+| tags | `String` | 동의 철회할 서비스 약관 태그<br/>여러 태그를 쉼표(`,`)로 구분한 하나의 문자열로 전달, [예제](#revoke-terms-sample) 참고<br/><br/>**비고**: [서비스 약관 동의 내역 확인하기](#terms) API 응답에서 동의 철회 가능 여부(`revocable`) 값이 `true`인 서비스 약관만 철회 가능 | O |
+
+#### 요청: 서비스 앱 어드민 키 방식 { .exclude } {#revoke-terms-request-admin-key}
+
+##### 헤더 {#revoke-terms-request-admin-key-header}
+
+| 이름 | 설명 | 필수 |
+| --- | --- | --- |
+| Authorization | `Authorization: KakaoAK ${SERVICE_APP_ADMIN_KEY}`<br/>인증 방식, 서비스 앱 어드민 키로 인증 요청 | O |
+
+##### 본문 {#revoke-terms-request-admin-key-query}
+
+| 이름 | 타입 | 설명 | 필수 |
+| --- | --- | --- | --- |
+| target_id_type | `String` | 사용자 ID 타입, `user_id`로 고정 | O |
+| target_id | `Long` | 사용자 ID | O |
+| tags | `String` | 동의 철회할 서비스 약관 태그<br/>여러 태그를 쉼표(`,`)로 구분한 하나의 문자열로 전달, [예제](#revoke-terms-sample) 참고<br/><br/>**비고**: [서비스 약관 동의 내역 확인하기](#terms) API 응답에서 동의 철회 가능 여부(`revocable`) 값이 `true`인 서비스 약관만 철회 가능 | O |
+
+#### 응답 {#revoke-terms-response}
+
+##### 본문 {#revoke-terms-response-body}
+
+| 이름 | 타입 | 설명 | 필수 |
+| --- | --- | --- | --- |
+| id | `Long` | 회원번호 | O |
+| revoked_service_terms | [`RevokedServiceTerms[]`](#revoked-service-terms) | 동의 철회에 성공한 서비스 약관 목록<br/><br/>**비고**: 동의 철회가 불가능한 사용자 미동의 또는 필수 동의 서비스 약관은 포함되지 않음 | X |
+
+##### RevokedServiceTerms {#revoked-service-terms}
+
+| 이름 | 타입 | 설명 | 필수 |
+| --- | --- | --- | --- |
+| tag | `String` | 동의 철회에 성공한 서비스 약관 태그(Tag) | O |
+| agreed | `Boolean` | 동의 철회 후 서비스 약관의 동의 상태<br/>`true`: 동의<br/>`false`: 미동의 | O |
+
+#### 예제 {#revoke-terms-sample}
+
+##### 요청: 액세스 토큰 방식
+
+```bash
+curl -v -X POST "https://kapi.kakao.com/v2/user/revoke/service_terms" \
+    -H "Authorization: Bearer ${ACCESS_TOKEN}"
+    -d "tags=optional_20200616,optional_no_consent"
+```
+
+##### 요청: 서비스 앱 어드민 키 방식
+
+```bash
+curl -v -X POST "https://kapi.kakao.com/v2/user/revoke/service_terms" \
+    -H "Authorization: KakaoAK ${SERVICE_APP_ADMIN_KEY}" \
+    -d "target_id_type=user_id" \
+    -d "target_id=${USER_ID}" \
+    -d "tags=optional_20200616,optional_no_consent"
+```
+
+##### 응답
+
+```json
+{
+  "id": 111111,
+  "revoked_service_terms": [
+    {
+      "tag": "optional_20200616",
+      "agreed": false
+    },
+    {
+      "tag": "optional_no_consent",
+      "agreed": false
+    }
+  ]
+}
+```
+
+##### 응답: 실패, 존재하지 않는 서비스 약관 태그
+
+```json
+HTTP/1.1 400 Bad Request
+{
+    "msg": "There is no tags to revoke. check out to configured this tags([test_tag]) in app(test_app).",
+    "code": -2
+}
+```
+
+## OpenID Connect {#oidc}
+
+이 항목은 카카오 로그인 OpenID Connect 관련 API의 사용 방법을 안내합니다.
+
+### OIDC: 메타데이터 확인하기 {#oidc-discovery}
+
+##### 기본 정보 {#oidc-discovery-info}
+
+| 메서드 | URL | 인증 방식 |
+| --- | --- | --- |
+| `GET` | `https://kauth.kakao.com/.well-known/openid-configuration` | - |
+
+| 권한 | 사전 설정 | [카카오 로그인](../kakaologin/common) | [사용자 동의](../kakaologin/common#authorization-consent-item) |
+| --- | --- | --- | --- |
+| - | - | - | - |
+
+<br />
+
+카카오 로그인의 OpenID Connect 서비스 제공자 설정을 확인합니다. 카카오 로그인은 OpenID Connect Discovery 표준 규격에 따라 서비스 제공자 설정을 담은 메타데이터(Metadata) 문서를 제공합니다.
+
+#### 응답 {#oidc-discovery-response}
+
+##### 본문 {#oidc-discovery-response-body}
+
+| 이름 | 타입 | 설명 | 필수 |
+| --- | --- | --- | --- |
+| issuer | `String` | 인증 기관 정보, `https://kauth.kakao.com`로 고정 | O |
+| authorization_endpoint | `String` | [인가 코드 받기](#request-code) 요청 URL | O |
+| token_endpoint | `String` | [토큰 받기](#request-token) 요청 URL | O |
+| userinfo_endpoint | `String` | 사용자 정보 요청 URL<br/><br/>**참고**: [OIDC: 사용자 정보 가져오기](#oidc-user-info)의 요청 URL이며 [사용자 정보 가져오기](#req-user-info)와 별개 | O |
+| jwks_uri | `String` | [OIDC: 공개키 목록 조회하기](#oidc-find-public-key) 요청 URL | O |
+| token_endpoint_auth_methods_supported | `String[]` | [토큰 받기](#request-token) 요청이 지원하는 클라이언트 인증 방식<br/>`client_secret_post`: `POST` 메서드를 사용한 [Client Secret](../kakaologin/prerequisite#security-client-secret) 전송 | O |
+| subject_types_supported | `String[]` | 지원하는 식별자 유형, `public`으로 고정 | O |
+| id_token_signing_alg_values_supported | `String[]` | ID 토큰 암호화 알고리즘, `RS256`으로 고정 | O |
+| request_uri_parameter_supported | `Boolean` | <a href="https://www.rfc-editor.org/rfc/rfc9126" target="_blank">Pushed Authorization</a> 지원 여부<br/>`false`(미지원)으로 고정 | O |
+| response_types_supported | `String[]` | [인가 코드 받기](#request-code) 요청이 지원하는 응답 형식(`response_type`), `code`로 고정 | O |
+| response_modes_supported | `String[]` | [인가 코드 받기](#request-code) 요청이 지원하는 `code` 응답 방식<br/>`query`: 쿼리 스트링(Query string) | O |
+| grant_types_supported | `String[]` | [토큰 받기](#request-token) 요청이 지원하는 인증 유형(`grant_type`), `authorization_code`(인가 코드), `refresh_token`(리프레시 토큰) 두 가지로 고정 | O |
+| code_challenge_methods_supported | `String[]` | PKCE(Proof Key for Code Exchange) `code_challenge` 매개 변수에 대한 `code_verifier` 인코딩에 지원되는 메서드, `S256`으로 고정 | O |
+| claims_supported | `String[]` | 서비스 제공자가 지원하는 데이터 목록<br/>[ID 토큰 구성 요소](../kakaologin/common#oidc-id-token)만 포함<br/><br/>**참고**: OpenID Connect를 통해 제공되는 사용자 정보의 종류는 [OIDC: 사용자 정보 가져오기](#oidc-user-info)에서 확인 가능 | O |
+
+#### 예제 {#oidc-discovery-sample-response}
+
+##### 요청
+
+```bash
+curl -v -X GET "https://kauth.kakao.com/.well-known/openid-configuration"
+```
+
+##### 응답
+
+```json
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=utf-8
+{
+    "issuer": "https://kauth.kakao.com",
+    "authorization_endpoint": "https://kauth.kakao.com/oauth/authorize",
+    "token_endpoint": "https://kauth.kakao.com/oauth/token",
+    "userinfo_endpoint": "https://kapi.kakao.com/v1/oidc/userinfo",
+    "jwks_uri": "https://kauth.kakao.com/.well-known/jwks.json",
+    "token_endpoint_auth_methods_supported": ["client_secret_post"],
+    "subject_types_supported": ["public"],
+    "id_token_signing_alg_values_supported": ["RS256"],
+    "request_uri_parameter_supported": false,
+    "response_types_supported": ["code"],
+    "response_modes_supported": ["query"],
+    "grant_types_supported": [
+        "authorization_code", "refresh_token"
+    ],
+    "code_challenge_methods_supported": ["S256"],
+    "claims_supported": [
+        "iss",
+        "aud",
+        "sub",
+        "auth_time",
+        "exp",
+        "iat",
+        "nonce",
+        "nickname",
+        "picture",
+        "email"
+    ]
+}
+```
+
+<br />
+
+### OIDC: 공개키 목록 조회하기 {#oidc-find-public-key}
+
+##### 기본 정보 {#oidc-find-public-key-info}
+
+| 메서드 | URL | 인증 방식 |
+| --- | --- | --- |
+| `GET` | `https://kauth.kakao.com/.well-known/jwks.json` | - |
+
+| 권한 | 사전 설정 | [카카오 로그인](../kakaologin/common) | [사용자 동의](../kakaologin/common#authorization-consent-item) |
+| --- | --- | --- | --- |
+| - | - | - | - |
+
+<br />
+
+카카오 인증 서버가 [ID 토큰](../kakaologin/common#oidc-id-token) 서명 시 사용한 공개키 목록을 조회합니다. 공개키는 일정 주기 또는 특별한 이슈 발생 시 변경될 수 있습니다. 주기적으로 최신 공개키 목록을 조회한 후, 일정 기간 캐싱(Caching)하여 사용할 것을 권장합니다. 지나치게 빈번한 공개키 목록 조회 요청 시, 요청이 차단될 수 있습니다.
+
+요청 성공 시, `JSON` 형식으로 카카오 인증 서버가 제공하는 공개키 목록을 받습니다. 응답의 공개키 목록 중, ID 토큰의 `kid`에 해당하는 공개키를 확인하여 [ID 토큰 유효성 검증](../kakaologin/common#oidc-id-token-verify) 시 사용합니다.
+
+#### 응답 {#oidc-find-public-key-response}
+
+##### 본문 {#oidc-find-public-key-response-body}
+
+| 이름 | 타입 | 설명 | 필수 |
+| --- | --- | --- | --- |
+| keys | [`JWK[]`](#oidc-find-public-key-response-body-jwk) | 공개키 목록을 담은 `JSON Web Key`(JWK) 배열(참고: <a href="https://datatracker.ietf.org/doc/html/rfc7517#section-5" target="_blank">RFC7517</a>) | O |
+
+##### JWK {#oidc-find-public-key-response-body-jwk}
+
+| 이름 | 타입 | 설명 | 필수 |
+| --- | --- | --- | --- |
+| kid | `String` | 공개키 ID | O |
+| kty | `String` | 공개키 타입, `RSA`로 고정 | O |
+| alg | `String` | 암호화 알고리즘 | O |
+| use | `String` | 공개키의 용도, `sig`(서명)으로 고정 | O |
+| n | `String` | 공개키 모듈(Modulus)<br/>공개키는 `n`과 `e`의 쌍으로 구성됨 | O |
+| e | `String` | 공개키 지수(Exponent)<br/>공개키는 `n`과 `e`의 쌍으로 구성됨 | O |
+
+#### 예제: 요청 {#oidc-find-public-key-sample-request}
+
+```bash
+curl -v -X GET "https://kauth.kakao.com/.well-known/jwks.json"
+```
+
+#### 예제: 응답, 성공 {#oidc-find-public-key-sample-response}
+
+```json
+HTTP/1.1 200 OK
+{
+    "keys": [
+        {
+            "kid": "3f96980381e451efad0d2ddd30e3d3",
+            "kty": "RSA",
+            "alg": "RS256",
+            "use": "sig",
+            "n": "q8zZ0b_MNaLd6Ny8wd4cjFomilLfFIZcmhNSc1ttx_oQdJJZt5CDHB8WWwPGBUDUyY8AmfglS9Y1qA0_fxxs-ZUWdt45jSbUxghKNYgEwSutfM5sROh3srm5TiLW4YfOvKytGW1r9TQEdLe98ork8-rNRYPybRI3SKoqpci1m1QOcvUg4xEYRvbZIWku24DNMSeheytKUz6Ni4kKOVkzfGN11rUj1IrlRR-LNA9V9ZYmeoywy3k066rD5TaZHor5bM5gIzt1B4FmUuFITpXKGQZS5Hn_Ck8Bgc8kLWGAU8TzmOzLeROosqKE0eZJ4ESLMImTb2XSEZuN1wFyL0VtJw",
+            "e": "AQAB"
+        }, {
+            "kid": "9f252dadd5f233f93d2fa528d12fea",
+            "kty": "RSA",
+            "alg": "RS256",
+            "use": "sig",
+            "n": "qGWf6RVzV2pM8YqJ6by5exoixIlTvdXDfYj2v7E6xkoYmesAjp_1IYL7rzhpUYqIkWX0P4wOwAsg-Ud8PcMHggfwUNPOcqgSk1hAIHr63zSlG8xatQb17q9LrWny2HWkUVEU30PxxHsLcuzmfhbRx8kOrNfJEirIuqSyWF_OBHeEgBgYjydd_c8vPo7IiH-pijZn4ZouPsEg7wtdIX3-0ZcXXDbFkaDaqClfqmVCLNBhg3DKYDQOoyWXrpFKUXUFuk2FTCqWaQJ0GniO4p_ppkYIf4zhlwUYfXZEhm8cBo6H2EgukntDbTgnoha8kNunTPekxWTDhE5wGAt6YpT4Yw",
+            "e": "AQAB"
+        }
+    ]
+}
+```
+
+<br />
+
+### OIDC: ID 토큰 정보 보기 {#oidc-get-id-token-info}
+
+##### 기본 정보 {#oidc-get-id-token-info-info}
+
+| 메서드 | URL | 인증 방식 |
+| --- | --- | --- |
+| `POST` | `https://kauth.kakao.com/oauth/tokeninfo` | - |
+
+| 권한 | 사전 설정 | [카카오 로그인](../kakaologin/common) | [사용자 동의](../kakaologin/common#authorization-consent-item) |
+| --- | --- | --- | --- |
+| - | [플랫폼 등록](../getting-started/app#platform) <br/>[카카오 로그인 활성화](../kakaologin/prerequisite#kakao-login-activate)<br/>[동의 항목](../kakaologin/prerequisite#consent-item)<br/>[OpenID Connect 활성화](../kakaologin/prerequisite#kakao-login-oidc) | 필요 | - |
+
+<br />
+
+<div class="box_sign type_error">
+  <strong>주의: API 용도</strong>
+  <p class="desc_sign">
+    ID 토큰 정보 보기 API는 디버깅(Debugging) 용도로 제공되며, 실제 서비스의 ID
+    토큰 유효성 검증 용도로 사용할 수 없습니다. 용도에 맞지 않는 요청은 차단될
+    수 있습니다.
+  </p>
+</div>
+
+ID 토큰 유효성 검증을 위한 참고 정보를 제공합니다. 서비스에서 [OpenID Connect](../kakaologin/common#oidc)(OIDC)를 통해 발급받은 [ID 토큰](../kakaologin/common#oidc-id-token) 유효성을 검증할 때, 직접 확인한 페이로드(Payload) 값이 이 API의 응답이 일치하는지 대조하여 확인하는 용도로 사용합니다.
+
+`id_token` 파라미터에 ID 토큰 값을 담아 `POST`로 요청합니다. 요청 성공 시, 요청 시 전달된 ID 토큰의 페이로드 값을 반환합니다. 페이로드만으로는 ID 토큰의 유효성을 검증할 수 없으므로, 서비스에서 자체적으로 [ID 토큰 유효성 검증](../kakaologin/common#oidc-id-token-verify)을 통해 ID 토큰 유효성을 검증해야 합니다.
+
+#### 요청 {#oidc-get-id-token-info-request}
+
+##### 헤더 {#oidc-get-id-token-info-request-header}
+
+| 이름 | 설명 | 필수 |
+| --- | --- | --- |
+| Content-type | `Content-type: application/x-www-form-urlencoded;charset=utf-8`<br/>요청 데이터 타입 | O |
+
+##### 본문 {#oidc-get-id-token-info-request-body}
+
+| 이름 | 타입 | 설명 | 필수 |
+| --- | --- | --- | --- |
+| id_token | `String` | [토큰 받기](#request-token)를 통해 발급받은 ID 토큰 값 문자열 | O |
+
+##### 응답 {#oidc-get-id-token-info-response}
+
+- [ID 토큰 페이로드](#request-token-response-id-token) 참고
+
+#### 예제 {#oidc-get-id-token-info-sample}
+
+##### 요청
+
+```bash
+curl -v POST "https://kauth.kakao.com/oauth/tokeninfo" \
+    -d "id_token=${ID_TOKEN}"
+```
+
+##### 응답: 성공
+
+```json
+HTTP/1.1 200 OK
+{
+    "iss": "https://kauth.kakao.com",
+    "aud": "${APP_KEY}",
+    "sub": "166959",
+    "iat": 1647183250,
+    "exp": 1647190450,
+    "nonce": "${NONCE}",
+    "auth_time": 1647183250
+}
+```
+
+##### 응답: 실패, 유효하지 않은 ID 토큰
+
+```json
+HTTP/1.1 400 Bad Request
+{
+    "error": "invalid_token",
+    "error_description": "${ERROR_DESCRIPTION}",
+    "error_code": "KOE400"
+}
+```
+
+<br />
+
+### OIDC: 사용자 정보 가져오기 {#oidc-user-info}
+
+##### 기본 정보 {#oidc-user-info-info}
+
+| 메서드 | URL | 인증 방식 |
+| --- | --- | --- |
+| `GET` | `https://kapi.kakao.com/v1/oidc/userinfo` | 액세스 토큰 |
+
+| 권한 | 사전 설정 | [카카오 로그인](../kakaologin/common) | [사용자 동의](../kakaologin/common#authorization-consent-item) |
+| --- | --- | --- | --- |
+| - | [플랫폼 등록](../getting-started/app#platform) <br/>[카카오 로그인 활성화](../kakaologin/prerequisite#kakao-login-activate)<br/>[동의 항목](../kakaologin/prerequisite#consent-item)<br/>[OpenID Connect 활성화](../kakaologin/prerequisite#kakao-login-oidc) | 필요 | 필요:<br/>사용자 정보를 요청할 모든 동의 항목 |
+
+<br />
+
+현재 로그인한 사용자의 정보를 불러옵니다. 이 API는 카카오계정의 기본적인 사용자 정보만을 제공하며, 이 외 사용자 정보는 [사용자 정보 가져오기](#req-user-info) API를 통해 받을 수 있습니다. 사용자 정보의 종류와 상세 설명은 [사용자 정보](../kakaologin/common#kakaoaccount)를 참고합니다.
+
+사용자 액세스 토큰을 헤더에 담아 `GET`으로 요청합니다. 요청 성공 시, 응답 본문에 사용자 정보를 포함한 `JSON` 객체를 반환합니다. 카카오 로그인 동의 화면에서 사용자가 동의하지 않은 항목의 사용자 정보는 응답에 포함되지 않습니다. [인가](../kakaologin/common#authorization)를 참고합니다.
+
+#### 요청 {#req-oidc-user-info-request}
+
+##### 헤더 {#req-oidc-user-info-request-header}
+
+| 이름 | 설명 | 필수 |
+| --- | --- | --- |
+| Authorization | `Authorization: Bearer ${ACCESS_TOKEN}`<br/>인증 방식, 액세스 토큰으로 인증 요청 | O |
+
+#### 응답 {#req-oidc-user-info-response}
+
+##### 본문 {#req-oidc-user-info-response-body}
+
+| 이름 | 타입 | 설명 | 필수 |
+| --- | --- | --- | --- |
+| sub | `String` | 회원번호 | O |
+| name | `String` | 카카오계정 이름<br/><br/>[**필요한 동의 항목**](../kakaologin/prerequisite#consent-item): 이름 | X |
+| nickname | `String` | 서비스에서 쓰이는 사용자 닉네임<br/>(기본값: 앱 연결 시 카카오계정 닉네임)<br/><br/> [**필요한 동의 항목**](../kakaologin/prerequisite#consent-item) : 프로필 정보(닉네임/프로필 사진) 또는 닉네임 | X |
+| picture | `String` | 서비스에서 쓰이는 사용자 썸네일 이미지 URL<br/>(기본값: 앱 연결 시의 카카오계정 썸네일 프로필 사진 URL, 110px\*110px 크기)<br/><br/>[**필요한 동의 항목**](../kakaologin/prerequisite#consent-item): 프로필 정보(닉네임/프로필 사진) 또는 프로필 사진 | X |
+| email | `String` | 카카오계정 대표 이메일<br/><br/> [**필요한 동의 항목**](../kakaologin/prerequisite#consent-item): 카카오계정(이메일)<br/>**비고**: [이메일 사용 시 주의사항](../kakaologin/common#policy-email-caution) | X |
+| email_verified | `Boolean` | 카카오계정 이메일의 인증 및 유효 여부<br/>`true`: 인증을 완료했고 유효한 이메일<br/>`false`: 인증을 완료하지 않았거나, 다른 카카오 계정에서 사용돼 유효하지 않은 이메일<br/><br/>[**필요한 동의 항목**](../kakaologin/prerequisite#consent-item): 카카오계정(이메일) | X |
+| gender | `String` | 카카오계정 성별<br/>`female`: 여성<br/>`male`: 남성<br/><br/>[**필요한 동의 항목**](../kakaologin/prerequisite#consent-item): 성별 | X |
+| birthdate | `String` | 카카오계정 생년월일<br/>필요한 동의 항목에 대한 사용자 동의 여부에 따라 제공되는 값 형식 다름<br/>생일만 동의한 경우: `0000-MM-DD` 형식<br/>출생 연도만 동의한 경우: `YYYY` 형식<br/>생일, 출생 연도 모두 동의한 경우: `YYYY-MM-DD` 형식<br/><br/>[**필요한 동의 항목**](../kakaologin/prerequisite#consent-item): 생일, 출생 연도 | X |
+| phone_number | `String` | 카카오계정 전화번호 <br/>국내 번호인 경우 `+82 00-0000-0000` 또는 `+82 00 0000 0000` 형식 <br/>해외 번호인 경우 자릿수, 하이픈(-) 유무나 위치가 다를 수 있음<br/> (참고: <a href="https://github.com/google/libphonenumber">libphonenumber</a>)<br/><br/>[**필요한 동의 항목**](../kakaologin/prerequisite#consent-item): 카카오계정(전화번호) | X |
+| phone_number_verified | `Boolean` | 카카오계정 전화번호 인증 여부<br/>`phone_number` 값 존재 시 `true`로 고정<br/><br/>[**필요한 동의 항목**](../kakaologin/prerequisite#consent-item): 카카오계정(전화번호) | X |
+
+#### 예제 {#req-oidc-user-info-sample}
+
+##### 요청
+
+```bash
+curl -v -X GET "https://kapi.kakao.com/v1/oidc/userinfo" \
+ -H "Authorization: Bearer ${ACCESS_TOKEN}"
+```
+
+##### 응답: 성공
+
+```json
+HTTP/ 1.1 200 OK
+{
+    "sub": "123456789",
+    "name": "홍길동",
+    "nickname": "홍길동",
+    "picture": "${IMAGE_PATH}",
+    "email": "sample@sample.com",
+    "email_verified": true,
+    "gender": "MALE",
+    "birthdate": "2002-11-30",
+    "phone_number": "+82 00-0000-0000",
+    "phone_number_verified": true
+}
+```
+
+## 고급: 연결하기 {#sign-up}
+
+##### 기본 정보 {#sign-up-info}
+
+| 메서드 | URL | 인증 방식 |
+| --- | --- | --- |
+| `POST` | `https://kapi.kakao.com/v1/user/signup` | 액세스 토큰 |
+
+| 권한 | 사전 설정 | [카카오 로그인](../kakaologin/common) | [사용자 동의](../kakaologin/common#authorization-consent-item) |
+| --- | --- | --- | --- |
+| 필요: 수동 연결 설정 | [플랫폼 등록](../getting-started/app#platform)<br/>[카카오 로그인 활성화](../kakaologin/prerequisite#kakao-login-activate) | 필요 | - |
+
+<br />
+
+<div class="box_sign type_error">
+  <span class="warning"></span>
+  <strong>주의: 자동 연결 사용 여부 확인</strong>
+  <p class="desc_sign">
+    연결하기는 자동 연결을 사용하지 않는 앱에서만 사용하는 API입니다. 사용 중인
+    앱의 자동 연결 사용 여부는 [내 애플리케이션] > [카카오 로그인] > [로그인 시
+    앱 자동 연결] 메뉴에서 확인할 수 있습니다. 해당 설정이 노출되지 않는다면
+    자동 연결을 사용하는 앱입니다. [로그인 시 앱 자동 연결] 설정이 노출된다면
+    자동 연결 사용 여부를 설정할 수 있는 앱으로, [사용 안함]으로 설정돼 있을
+    경우 연결하기 API를 사용해야 합니다.
+  </p>
+</div>
+
+연결하기 API는 **자동 연결**을 [사용 안함]으로 설정한 앱에서 앱과 사용자를 수동으로 연결하는 기능입니다. 자동 연결은 카카오 로그인 완료 시 앱과 사용자를 자동으로 연결하는 기능으로, 필요 시 카카오와 협의를 거쳐 자동 연결의 사용 여부를 설정할 수 있습니다. 다음은 앱과 사용자를 수동으로 연결하고자 하는 경우의 예시입니다.
+
+- 사용자가 카카오 로그인 및 서비스 이용에 동의한 직후 서비스에 가입 완료되지 않는 경우
+  - 사용자가 카카오 로그인 후 별도 정보 입력이나 인증 절차를 거쳐 가입 완료하는 경우
+  - 사용자가 즉시 가입되지 않고, 서비스에서 일정 주기로 사용자의 가입을 승인하는 경우
+- 이 외, 서비스에서 사용자의 앱 연결 상태를 직접 관리해야 할 필요가 있는 경우
+
+자동 연결을 사용하지 않는 서비스는 **반드시 연결하기를 호출해 사용자와 앱을 직접 연결**해야 합니다. 또한 사용자의 서비스 가입 상태와 앱 연결 상태가 일치하는지 확인하고 연결하기 및 연결 끊기를 사용해 사용자의 연결 상태를 관리해야 합니다. 따라서 반드시 필요한 경우가 아니라면 기본 설정인 자동 연결을 사용하는 것을 권장합니다.
+
+<div class="box_sign">
+  <strong>가입 미완료자 연결 끊기 처리</strong>
+  <p class="desc_sign">
+    사용자가 연결 대기 상태에서 24시간 안에 연결하기 API를 통해 연결 완료되지
+    않는다면, 가입 미완료자로 분류되어 카카오 API 플랫폼에서 연결 끊기
+    처리합니다. 연결 끊기 시{" "}
+    <a href="../kakaologin/prerequisite#unlink-callback">연결 끊기 설정</a>이
+    되어 있다면 콜백(Callback)이 전달되므로, 서비스에서도 해당 사용자에 대해{" "}
+    <a href="#unlink">연결 끊기</a> 요청 및 사용자 정보 삭제를 해야 합니다.
+    자세한 정보는{" "}
+    <a
+      href="https://devtalk.kakao.com/t/notice-unlink-for-users-who-have-not-completed-a-signup"
+      target="_blank"
+    >
+      공지사항
+    </a>
+    을 참고합니다.
+  </p>
+</div>
+
+액세스 토큰을 헤더에 담아 `POST`로 요청합니다. 요청 시 `properties` 파라미터를 사용해 [사용자 프로퍼티](../kakaologin/prerequisite#user-properties) 값 저장을 함께 요청할 수 있습니다. 사용자 프로퍼티 값은 사용자 연결 후 [사용자 정보 저장하기](../kakaologin/rest-api#properties) API를 통해서도 저장할 수 있으며 [연결 끊기](#unlink) 시 삭제됩니다.
+
+##### 참고: 사용자 연결 상태에 따른 사용자 정보 제공 범위
+
+사용자가 앱과 연결하기 API를 통해 연결 완료되지 않은 연결 대기(Preregistered) 상태인 경우, 다음의 일부 사용자 정보만 [사용자 정보 가져오기](../kakaologin/rest-api#req-user-info) 및 [여러 사용자 정보 가져오기](../kakaologin/rest-api#user-info-list) API를 통해 제공됩니다.
+
+| Name | Key |
+| --- | --- |
+| 회원번호 | `id` |
+| 고유 ID | `for_partner.uuid` |
+| 프로필 정보(닉네임/프로필 사진) | `kakao_account.profile` |
+| 연결 여부 | `has_signed_up` |
+| 연결 시각 | `connected_at` |
+| 카카오계정(이메일) | `kakao_account.email` |
+| 유효 이메일 여부 | `is_email_valid` |
+| 이메일 인증 여부 | `is_email_verified` |
+
+#### 요청 {#sign-up-request}
+
+##### 헤더 {#sign-up-request-header}
+
+| 이름 | 설명 | 필수 |
+| --- | --- | --- |
+| Authorization | `Authorization: Bearer ${ACCESS_TOKEN}`<br/>인증 방식, 액세스 토큰으로 인증 요청 | O |
+
+##### 본문 {#sign-up-request-body}
+
+| 이름 | 타입 | 설명 | 필수 |
+| --- | --- | --- | --- |
+| properties | `JSON` | {"key":"value"} 형태의 사용자 정보 리스트<br/>연결하기 시 사용자 프로퍼티 값을 저장하고자 할 때 전달<br/>[사용자 프로퍼티](../kakaologin/prerequisite#user-properties) 및 [사용자 정보 저장하기](../kakaologin/rest-api#properties) 참고 | X |
+
+#### 응답 {#sign-up-response}
+
+##### 본문 {#sign-up-response-body}
+
+| 이름 | 타입 | 설명 | 필수 |
+| --- | --- | --- | --- |
+| id | `Long` | 앱과 연결된 사용자 회원번호 | O |
+
+#### 예제 {#sign-up-sample}
+
+##### 요청: 사용자 프로퍼티 저장 없이 연결하기만 요청
+
+```bash
+curl -v -X POST "https://kapi.kakao.com/v1/user/signup" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -H "Authorization: Bearer ${ACCESS_TOKEN}"
+```
+
+##### 요청: 연결하기 요청 시 사용자 프로퍼티 저장
+
+```bash
+curl -v -X POST "https://kapi.kakao.com/v1/user/signup" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -H "Authorization: Bearer ${ACCESS_TOKEN}" \
+  --data-urlencode 'properties={"${CUSTOM_PROPERTY_KEY}":"${CUSTOM_PROPERTY_VALUE}"}'
+```
+
+##### 응답: 성공
+
+```json
+HTTP/1.1 200 OK
+{
+    "id":1376016924429759228
+}
+```
+
+##### 응답: 실패, 앱과 이미 연결되어 있는 사용자인 경우
+
+```json
+HTTP/1.1 400 Bad Request
+{
+    "msg":"already registered",
+    "code":-102
+}
+```
+
+##### 응답: 실패, 요청 시 사용한 액세스 토큰이 유효하지 않은 경우
+
+```json
+HTTP/1.1 401 Unauthorized
+WWW-Authenticate: Bearer error=invalid_token
+{
+    "msg":"this access token does not exist",
+    "code":-401
+}
+```
+
+##### 응답: 실패, 앱에 설정돼 있지 않은 사용자 프로퍼티 저장을 요청한 경우
+
+```json
+HTTP/1.1 400 Bad Request
+{
+    "msg":"user property not found ([gender, age] for appId=${APP_ID})",
+    "code":-201
+}
+```
+
+## 더 보기 {#see-more}
+
+<button
+  type="button"
+  class="normal"
+  onclick="location.href='/docs/latest/ko/reference/rest-api-reference'"
+>
+  REST API 레퍼런스
+</button>
