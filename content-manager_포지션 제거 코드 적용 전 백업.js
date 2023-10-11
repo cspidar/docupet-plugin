@@ -13,7 +13,7 @@ TODO: dynamic Import 사용으로 라이브러리 최신화
 TODO: 같은 문서 내 같은 id 존재하는 경우 에러 처리 + 계층형 id 작성 문법 지원? <A> / <B> -> <A-B>
 
 NOTE
-- 특정 버전 별칭 설치: npm install remark-parse_9.0.0@npm:remark-parse@9.0.0(독사3에서는 import 구문으로 변경 예정)
+특정 버전 별칭 설치: npm install remark-parse_9.0.0@npm:remark-parse@9.0.0
 */
 
 const fs = require("fs");

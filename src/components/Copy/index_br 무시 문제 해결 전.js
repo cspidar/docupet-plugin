@@ -1,5 +1,6 @@
 /**
 TODO: 없는 URL일 경우 에러 처리
+TODO: BR 안먹는 문제 해결
 */
 
 import React, { useState, useEffect } from "react";
@@ -64,16 +65,13 @@ export default function Copy({ path }) {
       //// 전처리 종료, 후처리 시작
 
       // 수집한 문서를 HAST로 변환
-      const hast = toHast(
-        {
-          type: "root",
-          children: collectedItems,
-        },
-        { allowDangerousHtml: true }, // br 태그 유지하기 위한 html 보존 옵션
-      );
+      const hast = toHast({
+        type: "root",
+        children: collectedItems,
+      });
 
       // 수집한 문서의 HAST를 HTML 변환
-      const rawHtml = toHtml(hast, { allowDangerousHtml: true }); // br 태그 유지하기 위한 html 보존 옵션
+      const rawHtml = toHtml(hast);
 
       // 도큐사우루스 복사 앵커 지원을 위한 클래스, 태그 추가
       // TODO: 제목 RNB 노출 구현?

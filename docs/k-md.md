@@ -741,15 +741,15 @@ HTTP/1.1 200 OK
 
 [OpenID Connect](../kakaologin/common#oidc)를 통해 [ID 토큰](../kakaologin/common#oidc-id-token)과 함께 발급된 리프레시 토큰으로 토큰 갱신을 요청한 경우, 액세스 토큰과 ID 토큰이 함께 갱신되어 응답에 포함됩니다. OpenID Connect를 사용하지 않는 앱의 토큰 갱신 시에는 ID 토큰이 응답에 포함되지 않습니다.
 
-#### 요청 <a id="refresh-token"></a>
+#### 요청 <a id="refresh-token-request"></a>
 
-##### 헤더 <a id="refresh-token-header"></a>
+##### 헤더 <a id="refresh-token-request-header"></a>
 
 | 이름 | 설명 | 필수 |
 | --- | --- | --- |
 | Content-type | `Content-type: application/x-www-form-urlencoded;charset=utf-8`<br/>요청 데이터 타입 | O |
 
-##### 본문 <a id="refresh-token-body"></a>
+##### 본문 <a id="refresh-token-request-body"></a>
 
 | 이름 | 타입 | 설명 | 필수 |
 | --- | --- | --- | --- |

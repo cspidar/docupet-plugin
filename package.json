@@ -31,6 +31,7 @@
     "remark-rehype": "^11.0.0",
     "unified": "^11.0.3",
     "unified_9.2.2": "npm:unified@^9.2.2",
+    "unist-util-remove-position_3.0.0": "npm:unist-util-remove-position@^3.0.0",
     "unist-util-visit": "^5.0.0",
     "unist-util-visit_2.0.3": "npm:unist-util-visit@^2.0.3"
   },

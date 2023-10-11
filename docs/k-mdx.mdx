@@ -1,3 +1,5 @@
+import { Pick, Copy } from "@site/src/components";
+
 # REST API - MDX
 
 ---
@@ -13,21 +15,8 @@
 
 ### md -> mdx 문제 해결 필요 리스트
 
-- 프리티어 리스트 들여쓰기 해결(https://stackoverflow.com/questions/50163820/how-to-write-an-ordered-list-which-contains-nested-unordered-lists-github-markd)
-  - 111
-  - 222
-    . 111
-    . 222의 반대
-
-1. 111
-2. 222
-   - 11
-   - 22
-
 - vscode에서 아웃라인 생성 안됨: 언어 타입 md로..
 - MDX 주석 적용 안됨
-
-MDX 이슈가 많은데, 기본 문서는 MD로 (컴포넌트는 기본 문법 대체해 확장, 도큐사우루스에 이미 있음(코드박스 등)), 자동 생성 문서는 MDX로 사용?: 우선 최대한 MDX 적용
 
 ---
 
@@ -815,15 +804,15 @@ HTTP/1.1 200 OK
 
 [OpenID Connect](../kakaologin/common#oidc)를 통해 [ID 토큰](../kakaologin/common#oidc-id-token)과 함께 발급된 리프레시 토큰으로 토큰 갱신을 요청한 경우, 액세스 토큰과 ID 토큰이 함께 갱신되어 응답에 포함됩니다. OpenID Connect를 사용하지 않는 앱의 토큰 갱신 시에는 ID 토큰이 응답에 포함되지 않습니다.
 
-#### 요청 {#refresh-token}
+#### 요청 {#refresh-token-request}
 
-##### 헤더 {#refresh-token-header}
+##### 헤더 {#refresh-token-request-header}
 
 | 이름 | 설명 | 필수 |
 | --- | --- | --- |
 | Content-type | `Content-type: application/x-www-form-urlencoded;charset=utf-8`<br/>요청 데이터 타입 | O |
 
-##### 본문 {#refresh-token-body}
+##### 본문 {#refresh-token-request-body}
 
 | 이름 | 타입 | 설명 | 필수 |
 | --- | --- | --- | --- |
