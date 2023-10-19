@@ -1,19 +1,7 @@
 //
 /**
-- sender: 컴포넌트에서 사용할 데이터 저장, 일반 플러그인(라이프사이클 API 사용)
-- editor: 문서화 전 소스 데이터 전처리, beforeDefaultRemarkPlugins 전달용 플러그인
-  - beforeDefaultRemarkPlugins
-    - 도큐사우루스 Remark 플러그인의 실행 순서 조정 또는 새로운 Remark 플러그인 추가
-    - Docusaurus의 라이프사이클 API 사용 불가
-
-TODO: sender에서 전체 문서를 별도 파싱하고 있음, DefaultRemarkPlugin에서 저장한 파싱 데이터는 컴포넌트에서 사용 불가, 해당 이슈 해결 시 플러그인 1개로 통합 가능
-
-TODO: editor로 변경할 html 항목들 취합 후 지원 필요 + 지원 범위는 어느정도? 넘어갈떄 html 내용은 다 처리하는건 어떨지?
-TODO: dynamic Import 사용으로 라이브러리 최신화
-TODO: 같은 문서 내 같은 id 존재하는 경우 에러 처리 + 계층형 id 작성 문법 지원? <A> / <B> -> <A-B>
-
 NOTE
-- 특정 버전 별칭 설치: npm install remark-parse_9.0.0@npm:remark-parse@9.0.0(독사3에서는 import 구문으로 변경 예정)
+- 특정 버전 별칭 설치: npm install remark-parse_9.0.0@npm:remark-parse@9.0.0
 */
 
 const fs = require("fs");
@@ -110,15 +98,8 @@ const sender = (context, options) => {
 
       // AST 파일 저장
       for (const [filePath, tree] of Object.entries(content)) {
-        const relativePath = path.relative(
-          path.join(__dirname, "docs"),
-          filePath,
-        );
-        const fileName = path
-          .basename(filePath)
-          .split(".")
-          .slice(0, -1)
-          .join(".");
+        const relativePath = path.relative(path.join(__dirname, "docs"), filePath);
+        const fileName = path.basename(filePath).split(".").slice(0, -1).join(".");
         const jsonFileName = `${fileName}.json`;
         const targetDir = path.dirname(relativePath);
 
@@ -126,10 +107,7 @@ const sender = (context, options) => {
           fs.mkdirSync(targetDir, { recursive: true });
         }
 
-        await createData(
-          path.join(targetDir, jsonFileName),
-          JSON.stringify(tree),
-        );
+        await createData(path.join(targetDir, jsonFileName), JSON.stringify(tree));
       }
     },
   };

@@ -2,23 +2,45 @@ import { Pick, Copy } from "@site/src/components";
 
 # Test
 
-TODO: MDX에서 주석 마스킹 안됨 문제 해결(독사v3에서 적용될 MDX 2에선 상관 없을지도)
+1. 문서 파일 소개
+2. Pick
+3. Copy
+
+<Copy path="k-mdx#request-code" />
+
+<Copy path="k-mdx#request-code-response" />
+
+<Copy path="k-mdx#request-code-sample" />
+
+<Pick path="k-mdx-half" name method url="code" />
+
+<Pick path="k-md" name method url="code" />
+
+도큐사우루스 기본 제공 컴포넌트
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
 
 ## Pick {#pick}
 
-### MD {#pick-md}
+### API List - MD {#pick-md}
 
 <Pick path="k-md" name method url />
 
-### MDX {#pick-mdx}
+### API List - MDX {#pick-mdx}
 
-<Pick path="k-mdx" name method url />
+<Pick path="k-mdx" name="bold" method url="code" />
 
 ## Copy {#copy}
 
 ### MD
 
-<Copy path="k-md#request-code" />
+<Copy path="k-mdx#request-code" />
 
 ### MDX
 

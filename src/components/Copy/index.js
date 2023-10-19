@@ -3,7 +3,7 @@ TODO: 없는 URL일 경우 에러 처리
 */
 
 import React, { useState, useEffect } from "react";
-import { CONTINUE, EXIT, SKIP, visit } from "unist-util-visit";
+import { EXIT, visit } from "unist-util-visit";
 import { toHast } from "mdast-util-to-hast";
 import { toHtml } from "hast-util-to-html";
 
@@ -13,15 +13,14 @@ export default function Copy({ path }) {
 
   const [pathDoc, pathId] = path.split("#");
 
-  useEffect(() => {
-    import(`/.docusaurus/content-sender/default/${pathDoc}.json`)
-      .then((module) => {
-        setTree(module.default);
-      })
-      .catch((error) => {
-        console.error("Failed to load JSON:", error);
-      });
-  }, [pathDoc, pathId]);
+  // TODO: 문서 경로대로 json 파일 로드
+  import(`/.docusaurus/content-sender/default/${pathDoc}.json`)
+    .then((module) => {
+      setTree(module.default);
+    })
+    .catch((error) => {
+      console.error("Failed to load JSON:", error);
+    });
 
   useEffect(() => {
     if (tree) {
@@ -40,11 +39,7 @@ export default function Copy({ path }) {
         }
 
         // Copy할 id 해당 제목 검색
-        if (
-          node.children.some((child) =>
-            child.value.trim().includes(`{#${pathId}}`),
-          )
-        ) {
+        if (node.children.some((child) => child.value.trim().includes(`{#${pathId}}`))) {
           currentIndex = index;
           currentDepth = node.depth;
           shouldFindNext = true;
@@ -58,8 +53,6 @@ export default function Copy({ path }) {
         // nextIndex가 null인 경우, 문서 끝까지 수집
         collectedItems = tree.children.slice(currentIndex);
       }
-
-      console.log(JSON.stringify(collectedItems, null, 2));
 
       //// 전처리 종료, 후처리 시작
 
@@ -76,25 +69,19 @@ export default function Copy({ path }) {
       const rawHtml = toHtml(hast, { allowDangerousHtml: true }); // br 태그 유지하기 위한 html 보존 옵션
 
       // 도큐사우루스 복사 앵커 지원을 위한 클래스, 태그 추가
-      // TODO: 제목 RNB 노출 구현?
+      // TODO: 제목 RNB 노출 구현
       // TODO: 하드코딩 개선
-      const headingRegex = new RegExp(
-        `<(h[2-5])>\\s*(.*?)\\s*\\{\\#(.*?)\\}\\s*<\\/(h[2-5])>`,
-        "g",
-      );
+      const headingRegex = new RegExp(`<(h[2-5])>\\s*(.*?)\\s*\\{\\#(.*?)\\}\\s*<\\/(h[2-5])>`, "g");
       const html = rawHtml.replace(
         headingRegex,
         (match, hTag, title, id) =>
           `<${hTag} class="anchor anchorWithStickyNavbar_node_modules-@docusaurus-theme-classic-lib-theme-Heading-styles-module" id="${id.trim()}">${title.trim()}<a href="#${id.trim()}" class="hash-link" aria-label="Direct link to Copy" title="Direct link to Copy">​</a></${hTag}>`,
       );
-      // .replaceAll("\\n", "<br />");
-
-      // console.log(JSON.stringify(html, null, 4));
 
       setHtml(html);
     }
   }, [tree]);
 
-  // TODO: html return이 dangerous할지 확인 필요
+  // TODO: 이 컴포넌트에서 html return 위험 확인
   return <div dangerouslySetInnerHTML={{ __html: html }} />;
 }

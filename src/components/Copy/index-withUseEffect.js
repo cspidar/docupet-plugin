@@ -1,6 +1,5 @@
 /**
 TODO: 없는 URL일 경우 에러 처리
-TODO: BR 안먹는 문제 해결
 */
 
 import React, { useState, useEffect } from "react";
@@ -60,18 +59,19 @@ export default function Copy({ path }) {
         collectedItems = tree.children.slice(currentIndex);
       }
 
-      console.log(JSON.stringify(collectedItems, null, 2));
-
       //// 전처리 종료, 후처리 시작
 
       // 수집한 문서를 HAST로 변환
-      const hast = toHast({
-        type: "root",
-        children: collectedItems,
-      });
+      const hast = toHast(
+        {
+          type: "root",
+          children: collectedItems,
+        },
+        { allowDangerousHtml: true }, // br 태그 유지하기 위한 html 보존 옵션
+      );
 
       // 수집한 문서의 HAST를 HTML 변환
-      const rawHtml = toHtml(hast);
+      const rawHtml = toHtml(hast, { allowDangerousHtml: true }); // br 태그 유지하기 위한 html 보존 옵션
 
       // 도큐사우루스 복사 앵커 지원을 위한 클래스, 태그 추가
       // TODO: 제목 RNB 노출 구현?
@@ -85,14 +85,11 @@ export default function Copy({ path }) {
         (match, hTag, title, id) =>
           `<${hTag} class="anchor anchorWithStickyNavbar_node_modules-@docusaurus-theme-classic-lib-theme-Heading-styles-module" id="${id.trim()}">${title.trim()}<a href="#${id.trim()}" class="hash-link" aria-label="Direct link to Copy" title="Direct link to Copy">​</a></${hTag}>`,
       );
-      // .replaceAll("\\n", "<br />");
-
-      // console.log(JSON.stringify(html, null, 4));
 
       setHtml(html);
     }
   }, [tree]);
 
-  // TODO: html return이 dangerous할지 확인 필요
+  // TODO: 이 컴포넌트에서 html return 위험 확인 필요
   return <div dangerouslySetInnerHTML={{ __html: html }} />;
 }
