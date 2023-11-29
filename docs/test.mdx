@@ -1,4 +1,4 @@
-import { Pick, Copy } from "@site/src/components";
+import { Pick, Copy, Code } from "@site/src/components";
 
 # Test
 
@@ -6,25 +6,43 @@ import { Pick, Copy } from "@site/src/components";
 2. Pick
 3. Copy
 
-<Copy path="k-mdx#request-code" />
+<Code lang="bash">
+curl -v -G GET "https://kapi.kakao.com/v2/api/calendar/public/events" \
+    -H "Authorization: KakaoAK 123123123" \
+    -d "channel_public_id=_xnrxjem" \
+    -d "from=2022-12-01T00:00:00Z" \
+    -d "to=2022-12-11T00:00:00Z" \
+    -d "limit=3"
+</Code>
 
-<Copy path="k-mdx#request-code-response" />
 
-<Copy path="k-mdx#request-code-sample" />
+```bash
+curl -v -G GET "https://kapi.kakao.com/v2/api/calendar/public/events" \
+    -H "Authorization: KakaoAK 123123123" \
+    -d "channel_public_id=_xnrxjem" \
+    -d "from=2022-12-01T00:00:00Z" \
+    -d "to=2022-12-11T00:00:00Z" \
+    -d "limit=3"
+```
 
-<Pick path="k-mdx-half" name method url="code" />
 
-<Pick path="k-md" name method url="code" />
 
-도큐사우루스 기본 제공 컴포넌트
 
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
+<!-- <Code lang="bash">
+curl -v -G GET "https://www.google.com"
+</Code> -->
+
+<br/>
+
+1. CodeBlock 빼내서 simple editor 장착
+1. curlCommand 파싱 방법 찾기
+1. 위 요청을 js fetch 요청으로 응답받아서 아래에 div로 출력하도록
+
+---
+
+---
+
+---
 
 ## Pick {#pick}
 

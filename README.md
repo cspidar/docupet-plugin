@@ -1,3 +1,15 @@
+# 구현 사항
+
+## 플러그인
+- sender
+- editor
+
+## 컴포넌트
+- Pick
+- Copy
+
+---
+
 # Website
 
 This website is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator.

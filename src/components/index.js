@@ -1,5 +1,5 @@
-import Doc from "./Doc";
 import Pick from "./Pick";
 import Copy from "./Copy";
+import Code from "./Code";
 
-export { Doc, Pick, Copy };
+export { Pick, Copy, Code };
