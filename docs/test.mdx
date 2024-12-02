@@ -1,4 +1,4 @@
-import { Pick, Copy, Code } from "@site/src/components";
+import { Pick, Copy, Code, PickDirectMD } from "@site/src/components";
 
 # Test
 
@@ -6,59 +6,35 @@ import { Pick, Copy, Code } from "@site/src/components";
 2. Pick
 3. Copy
 
-<Code lang="bash">
-curl -v -G GET "https://kapi.kakao.com/v2/api/calendar/public/events" \
-    -H "Authorization: KakaoAK 123123123" \
-    -d "channel_public_id=_xnrxjem" \
-    -d "from=2022-12-01T00:00:00Z" \
-    -d "to=2022-12-11T00:00:00Z" \
-    -d "limit=3"
-</Code>
-
-
-```bash
-curl -v -G GET "https://kapi.kakao.com/v2/api/calendar/public/events" \
-    -H "Authorization: KakaoAK 123123123" \
-    -d "channel_public_id=_xnrxjem" \
-    -d "from=2022-12-01T00:00:00Z" \
-    -d "to=2022-12-11T00:00:00Z" \
-    -d "limit=3"
-```
-
-
-
-
-<!-- <Code lang="bash">
-curl -v -G GET "https://www.google.com"
-</Code> -->
-
-<br/>
+<br />
 
 1. CodeBlock 빼내서 simple editor 장착
 1. curlCommand 파싱 방법 찾기
 1. 위 요청을 js fetch 요청으로 응답받아서 아래에 div로 출력하도록
 
----
+## Pick
 
----
-
----
-
-## Pick {#pick}
-
-### API List - MD {#pick-md}
+### API List - MD
 
 <Pick path="k-md" name method url />
 
-### API List - MDX {#pick-mdx}
+### API List - MDX
 
 <Pick path="k-mdx" name="bold" method url="code" />
 
-## Copy {#copy}
+## Copy
 
 ### MD
 
-<Copy path="k-mdx#request-code" />
+<Copy path="k-mdx#request-code-response" />
+
+http://localhost:3000/docs/test#request-code-response-query
+
+http://localhost:3000/docs/test#request-code-response-query
+
+http://localhost:3000/docs/k-md#request-code-response
+
+http://localhost:3000/docs/k-md#request-code-info
 
 ### MDX
 
@@ -71,3 +47,9 @@ curl -v -G GET "https://www.google.com"
 - docdo: 본 프로젝트
   - docupet: 이전 일부 작업
   - docdo-ref: 도큐사우루스 문서 사이트 클론
+
+## Pick direct MD
+
+직접 MD 읽기 TEST
+
+<PickDirectMD path="k-md" name method url />

@@ -32,8 +32,8 @@ export default function Code({ children, lang }) {
     url = urlMatch[2];
   }
 
-  console.log("Method:", method); // GET 또는 POST
-  console.log("URL:", url);
+  // console.log("Method:", method); // GET 또는 POST
+  // console.log("URL:", url);
 
   return (
     <>
