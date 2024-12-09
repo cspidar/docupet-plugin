@@ -1,6 +1,3 @@
-//
-// TODO: 컴포넌트 대량 사용 중 dev 빌드 지연 이슈 발생 시, dev에선 문서 변경 내용 무시하고 prod에서만 반영하도록 수정 필요
-
 import React, { useState, useEffect } from "react";
 import { visit } from "unist-util-visit";
 
@@ -10,7 +7,7 @@ export default function Pick({ path, name, method, url }) {
 
   // path가 변경될 때마다 새로운 JSON 파일을 불러와 tree 상태 업데이트
   useEffect(() => {
-    // TODO: 문서 경로대로 json 파일 로드
+    // 문서 경로대로 json 파일 로드
     import(`/.docusaurus/content-sender/default/${path}.json`)
       .then((module) => {
         setTree(module.default);
@@ -21,11 +18,11 @@ export default function Pick({ path, name, method, url }) {
   }, [path]);
 
   if (tree) {
-    //// "기본 정보" 이름이 포함된 제목 찾기
+    // "기본 정보" 이름이 포함된 제목 찾기
     visit(tree, "heading", (node, index, parent) => {
       node.children.forEach((child) => {
         if (child.type === "text" && /기본 정보\s*/.test(child.value)) {
-          //// 위 노드 탐색 - API 이름
+          //// 위 노드 탐색: API 이름
           let rowData = {};
           for (let i = index - 1; i >= 0; i--) {
             const prevNode = parent.children[i];
@@ -37,10 +34,9 @@ export default function Pick({ path, name, method, url }) {
             }
           }
 
-          //// 아래 노드 탐색 - Method, URL
+          //// 아래 노드 탐색: Method, URL
           for (let i = index + 1; i < parent.children.length; i++) {
             const nextNode = parent.children[i];
-            // TODO: 검색 조건 강화 필요
             if (nextNode.type === "table") {
               rowData.method =
                 nextNode.children[1].children[0].children[0].value;

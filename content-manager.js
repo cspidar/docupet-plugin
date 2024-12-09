@@ -8,10 +8,6 @@
 
 TODO: sender에서 전체 문서를 별도 파싱하고 있음, DefaultRemarkPlugin에서 저장한 파싱 데이터는 컴포넌트에서 사용 불가, 해당 이슈 해결 시 플러그인 1개로 통합 가능
 
-TODO: 같은 문서 내 같은 id 존재하는 경우 에러 처리 + 계층형 id 작성 문법 지원? <A> / <B> -> <A-B>
-
-NOTE
-특정 버전 별칭 설치: npm install remark-parse_9.0.0@npm:remark-parse@9.0.0
 */
 
 const fs = require("fs");
@@ -20,16 +16,10 @@ const unified = require("unified_9.2.2");
 const remarkParse = require("remark-parse_9.0.0");
 const remarkMdx = require("remark-mdx_1.6.22");
 const visit = require("unist-util-visit_2.0.3");
-
-// 테이블 파싱을 위해 사용
 const remarkGfm = require("remark-gfm_1.0.0");
-
-// AST에서 position 노드 제거에 사용
 const removePosition = require("unist-util-remove-position_3.0.0");
 
-////
-
-// <a id -> {#ID}로 변경 함수
+// ID 형식 변경 함수(<a id -> {#ID})
 const syncId = (tree) => {
   visit(tree, "heading", (node) => {
     let newTextValue = "";
@@ -135,7 +125,7 @@ const sender = (context, options) => {
 
 const editor = () => {
   return (tree) => {
-    // <a id -> {#ID}로 변경
+    // ID 형식 변경
     syncId(tree);
   };
 };
