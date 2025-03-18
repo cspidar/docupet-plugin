@@ -19,39 +19,10 @@ const visit = require("unist-util-visit_2.0.3");
 const remarkGfm = require("remark-gfm_1.0.0");
 const removePosition = require("unist-util-remove-position_3.0.0");
 
-// ID 형식 변경 함수(<a id -> {#ID})
-const syncId = (tree) => {
-  visit(tree, "heading", (node) => {
-    let newTextValue = "";
-
-    node.children.forEach((child, index) => {
-      if (child.type === "text") {
-        newTextValue += child.value.trim();
-      }
-
-      if (child.type === "jsx" || child.type === "html") {
-        const regex = /\s*<a id="(.+?)">\s*/g;
-        const match = regex.exec(child.value);
-
-        if (match) {
-          const idValue = match[1];
-          newTextValue += ` {#${idValue}}`;
-        }
-      }
-    });
-
-    node.children = [
-      {
-        type: "text",
-        value: newTextValue,
-      },
-    ];
-  });
-};
-
 const sender = (context, options) => {
   return {
     name: "content-sender",
+
     async loadContent() {
       const docsDir = path.join(__dirname, "docs");
       const content = {};
@@ -128,6 +99,36 @@ const editor = () => {
     // ID 형식 변경
     syncId(tree);
   };
+};
+
+// ID 형식 변경 함수(<a id -> {#ID})
+const syncId = (tree) => {
+  visit(tree, "heading", (node) => {
+    let newTextValue = "";
+
+    node.children.forEach((child, index) => {
+      if (child.type === "text") {
+        newTextValue += child.value.trim();
+      }
+
+      if (child.type === "jsx" || child.type === "html") {
+        const regex = /\s*<a id="(.+?)">\s*/g;
+        const match = regex.exec(child.value);
+
+        if (match) {
+          const idValue = match[1];
+          newTextValue += ` {#${idValue}}`;
+        }
+      }
+    });
+
+    node.children = [
+      {
+        type: "text",
+        value: newTextValue,
+      },
+    ];
+  });
 };
 
 module.exports = { sender, editor };
